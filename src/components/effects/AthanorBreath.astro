@@ -35,6 +35,11 @@ const roundels = [
   .athanor-breath {
     container-type: size;
     overflow: hidden;
+    /* Stesso zoom della copertina sotto (group-hover:scale-[1.04], 700ms), così i tondi restano allineati */
+    transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  :global(.group:hover) .athanor-breath {
+    transform: scale(1.04);
   }
   /* La composizione 2:1 "copre" il contenitore come object-fit: cover, centrata */
   .stage {

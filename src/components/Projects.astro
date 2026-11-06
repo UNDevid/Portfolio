@@ -56,9 +56,9 @@ const filters = [
   .filter-btn[aria-pressed='true'] {
     background: var(--accent);
     border-color: var(--accent);
-    color: #04110a;
+    color: var(--color-on-volt);
   }
   .filter-btn[aria-pressed='true'] span {
-    color: #04110a99;
+    color: color-mix(in oklab, var(--color-on-volt) 60%, transparent);
   }
 </style>
