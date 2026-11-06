@@ -17,6 +17,16 @@ const projects = defineCollection({
       /** 1-3 caratteri mostrati sulla copertina generata quando manca `cover`. */
       monogram: z.string().max(3).optional(),
       cover: image().optional(),
+      /** Lato da tenere visibile quando la copertina viene ritagliata. */
+      coverPosition: z.enum(['left', 'center', 'right']).default('center'),
+      /** Stato di pubblicazione, es. "Su Google Play". */
+      status: z.string().optional(),
+      /** Immagini nella pagina del progetto: screenshot in cornici da telefono, oppure opere d'arte. */
+      gallery: z
+        .array(z.object({ src: image(), caption: z.string(), label: z.string().optional() }))
+        .default([]),
+      galleryStyle: z.enum(['phone', 'art']).default('phone'),
+      galleryTitle: z.string().optional(),
       links: z
         .array(z.object({ label: z.string(), href: z.string() }))
         .default([]),

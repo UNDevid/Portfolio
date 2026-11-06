@@ -10,11 +10,22 @@ interface Props {
   platform: Platform;
   cover?: ImageMetadata;
   monogram?: string;
+  position?: 'left' | 'center' | 'right';
   name?: string;
   class?: string;
   eager?: boolean;
 }
-const { title, accent, platform, cover, monogram, name, class: cls = '', eager = false } = Astro.props;
+const {
+  title,
+  accent,
+  platform,
+  cover,
+  monogram,
+  position = 'center',
+  name,
+  class: cls = '',
+  eager = false,
+} = Astro.props;
 const glyph = { android: '</>', flutter: '◆', web: '{ }' }[platform];
 const initials =
   monogram ??
@@ -34,6 +45,7 @@ const initials =
         src={cover}
         alt={`Anteprima di ${title}`}
         class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+        style={`object-position: ${position} center`}
         loading={eager ? 'eager' : 'lazy'}
         widths={[480, 800, 1200]}
         sizes="(min-width: 1024px) 50vw, 100vw"

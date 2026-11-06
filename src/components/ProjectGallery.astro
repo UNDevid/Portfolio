@@ -1,0 +1,94 @@
+---
+// Galleria del progetto.
+// - phone: screenshot in cornici da telefono, in fila orizzontale scorrevole
+// - art:   opere in una parete da galleria, con numero e titolo
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  title: string;
+  shots: { src: ImageMetadata; caption: string; label?: string }[];
+  variant?: 'phone' | 'art';
+  heading?: string;
+}
+const { title, shots, variant = 'phone', heading = variant === 'art' ? 'Le opere' : 'Schermate' } = Astro.props;
+---
+
+<section class="relative overflow-hidden border-y border-[var(--color-line)] bg-[var(--color-bg-2)]/60 py-16" aria-label={`${heading}: ${title}`}>
+  <div class="mx-auto max-w-6xl px-4 sm:px-8">
+    <p class="eyebrow mb-10" data-reveal><span class="text-[var(--accent)]">▸</span> {heading}</p>
+  </div>
+
+  {
+    variant === 'phone' ? (
+      <ul class="gallery flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-6 sm:gap-10 sm:px-8 lg:justify-center">
+        {shots.map((s, i) => (
+          <li class="shrink-0 snap-center" data-reveal style={`--d:${i * 90}ms`}>
+            <figure>
+              <div class="frame w-[210px] rounded-[34px] p-[7px] sm:w-[240px]" data-tilt="6">
+                <Image
+                  src={s.src}
+                  alt={`${title}: ${s.caption}`}
+                  widths={[240, 480]}
+                  sizes="240px"
+                  class="block aspect-[1100/2442] w-full rounded-[28px] object-cover"
+                />
+              </div>
+              <figcaption class="mt-4 text-center font-mono text-xs text-[var(--color-muted)]">{s.caption}</figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <ul class="mx-auto grid max-w-6xl grid-cols-2 gap-x-4 gap-y-10 px-4 sm:grid-cols-3 sm:px-8 lg:grid-cols-4 lg:gap-x-8">
+        {shots.map((s, i) => (
+          <li data-reveal style={`--d:${(i % 4) * 80}ms`}>
+            <figure class="group">
+              <div class="art overflow-hidden rounded-lg">
+                <Image
+                  src={s.src}
+                  alt={s.label ? `${s.label}, ${s.caption}` : s.caption}
+                  widths={[320, 640]}
+                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+                  class="block aspect-[3/4] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                />
+              </div>
+              <figcaption class="mt-3 flex items-baseline gap-2">
+                {s.label && <span class="font-mono text-xs text-[var(--accent)]">{s.label}</span>}
+                <span class="display text-base text-white">{s.caption}</span>
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>
+
+<style>
+  .frame {
+    background: linear-gradient(145deg, #2a313c, #0d1117 40%, #1b2129);
+    box-shadow:
+      inset 0 0 0 1px #ffffff1f,
+      0 40px 80px -30px #000,
+      0 0 60px -30px var(--accent);
+    transition: transform 0.6s var(--ease-out);
+  }
+  .art {
+    box-shadow:
+      0 0 0 1px #ffffff14,
+      0 30px 60px -30px #000;
+    transition: box-shadow 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+  }
+  .group:hover .art {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--accent) 50%, transparent),
+      0 40px 70px -30px #000,
+      0 0 50px -25px var(--accent);
+  }
+  .gallery {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+</style>

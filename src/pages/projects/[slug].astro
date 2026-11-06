@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ProjectCover from '../../components/ProjectCover.astro';
+import ProjectGallery from '../../components/ProjectGallery.astro';
 import { platforms } from '../../config';
 import { url } from '../../utils';
 
@@ -41,6 +42,14 @@ const meta = [
         <span class="h-2 w-2 rounded-full" style={`background:${p.color}`}></span>
         <span style={`color:${p.color}`}>{p.label}</span>
         <span class="text-[var(--color-dim)]">· Case study</span>
+        {
+          d.status && (
+            <span class="chip ml-2 !border-[color-mix(in_oklab,var(--accent)_45%,transparent)] !text-[var(--accent)]">
+              <span class="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+              {d.status}
+            </span>
+          )
+        }
       </p>
       <h1
         class="display mt-5 max-w-4xl text-[clamp(2.8rem,8vw,6rem)] font-semibold"
@@ -71,6 +80,7 @@ const meta = [
         platform={d.platform}
         cover={d.cover}
         monogram={d.monogram}
+        position={d.coverPosition}
         name={`cover-${project.id}`}
         eager
         class="aspect-[16/9] w-full rounded-3xl border border-[var(--color-line)] sm:aspect-[21/9]"
@@ -123,6 +133,12 @@ const meta = [
         }
       </aside>
     </div>
+
+    {
+      d.gallery.length > 0 && (
+        <ProjectGallery title={d.title} shots={d.gallery} variant={d.galleryStyle} heading={d.galleryTitle} />
+      )
+    }
 
     {
       next.id !== project.id && (
