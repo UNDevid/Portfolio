@@ -1,0 +1,88 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ProjectCover from './ProjectCover.astro';
+import { platforms } from '../config';
+import { url } from '../utils';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  index: number;
+}
+const { project, index } = Astro.props;
+const { title, summary, platform, year, client, stack, accent, cover, monogram, featured } = project.data;
+const p = platforms[platform];
+---
+
+<li
+  data-platform={platform}
+  class:list={['card-wrap', featured && 'lg:col-span-2']}
+  style={`view-transition-name: card-${project.id}`}
+>
+  <a
+    href={url(`/projects/${project.id}/`)}
+    class:list={[
+      'group card relative flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] transition-[border-color,transform] duration-500',
+      featured && 'lg:flex-row',
+    ]}
+    style={`--c:${accent}`}
+    data-tilt={featured ? '2' : '4'}
+    data-reveal
+    data-index={index}
+  >
+    <ProjectCover
+      title={title}
+      accent={accent}
+      platform={platform}
+      cover={cover}
+      monogram={monogram}
+      name={`cover-${project.id}`}
+      class:list={[
+        'aspect-[16/10] w-full',
+        featured && 'lg:aspect-auto lg:min-h-[420px] lg:w-[58%] lg:shrink-0',
+      ]}
+    />
+
+    <div class:list={['relative flex flex-1 flex-col gap-4 p-6 sm:p-7', featured && 'lg:p-10']}>
+      {featured && <span class="chip w-fit !text-[var(--c)]">★ In evidenza</span>}
+      <div class="flex items-center justify-between gap-3 font-mono text-[11px] text-[var(--color-dim)]">
+        <span class="flex items-center gap-2">
+          <span class="h-2 w-2 rounded-full" style={`background:${p.color}`}></span>
+          <span style={`color:${p.color}`}>{p.label}</span>
+          <span>·</span>
+          <span>{client}</span>
+        </span>
+        <span>{year}</span>
+      </div>
+      <h3
+        class="display text-2xl font-semibold sm:text-3xl"
+        transition:name={`title-${project.id}`}
+      >
+        {title}
+      </h3>
+      <p class="text-[0.95rem] leading-relaxed text-[var(--color-muted)]">{summary}</p>
+      <ul class="mt-auto flex flex-wrap gap-1.5 pt-2">
+        {stack.slice(0, 4).map((s) => <li class="chip">{s}</li>)}
+      </ul>
+      <span
+        class="absolute right-6 top-6 grid h-10 w-10 -translate-y-1 place-items-center rounded-full border border-[var(--color-line-strong)] text-sm opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 sm:right-7"
+        style="background: var(--c); color:#000"
+        aria-hidden="true">↗</span
+      >
+    </div>
+
+    <!-- bagliore bordo -->
+    <span
+      class="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+      style="background: radial-gradient(500px circle at var(--gx,50%) var(--gy,50%), color-mix(in oklab, var(--c) 14%, transparent), transparent 45%)"
+      aria-hidden="true"></span>
+  </a>
+</li>
+
+<style>
+  .card:hover {
+    border-color: color-mix(in oklab, var(--c) 45%, transparent);
+  }
+  .card-wrap[hidden] {
+    display: none;
+  }
+</style>

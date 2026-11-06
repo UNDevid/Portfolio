@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../utils';
+---
+
+<Base title="404 — Pagina non trovata">
+  <section class="relative grid min-h-[80dvh] place-items-center px-4 pt-24 text-center">
+    <div class="bg-grid pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    <div class="relative">
+      <p class="eyebrow mb-6">java.lang.NullPointerException</p>
+      <h1 class="display text-[clamp(6rem,22vw,14rem)] font-bold text-gradient">404</h1>
+      <p class="mt-4 font-mono text-[var(--color-muted)] caret">Questa schermata non è nel back stack</p>
+      <a href={url('/')} class="btn btn-primary mt-10" data-magnetic>← Torna alla home</a>
+    </div>
+  </section>
+</Base>

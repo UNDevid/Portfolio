@@ -1,0 +1,95 @@
+---
+// Copertina: usa l'immagine se presente, altrimenti genera una cover astratta dal colore accento.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { Platform } from '../config';
+
+interface Props {
+  title: string;
+  accent: string;
+  platform: Platform;
+  cover?: ImageMetadata;
+  monogram?: string;
+  name?: string;
+  class?: string;
+  eager?: boolean;
+}
+const { title, accent, platform, cover, monogram, name, class: cls = '', eager = false } = Astro.props;
+const glyph = { android: '</>', flutter: '◆', web: '{ }' }[platform];
+const initials =
+  monogram ??
+  title
+    .split(/[\s']+/)
+    .filter((w) => w.length > 2)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase();
+---
+
+<div class:list={['cover relative overflow-hidden', cls]} style={`--c:${accent}`} transition:name={name}>
+  {
+    cover ? (
+      <Image
+        src={cover}
+        alt={`Anteprima di ${title}`}
+        class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+        loading={eager ? 'eager' : 'lazy'}
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 1024px) 50vw, 100vw"
+      />
+    ) : (
+      <div class="gen absolute inset-0" aria-hidden="true">
+        <div class="orb orb-1" />
+        <div class="orb orb-2" />
+        <div class="grid-lines absolute inset-0" />
+        <span class="glyph absolute right-5 bottom-3 font-mono text-[clamp(3rem,10vw,6rem)] font-bold">{glyph}</span>
+        <span class="display absolute left-6 top-5 text-[clamp(2.5rem,7vw,4.5rem)] font-bold text-white/90">{initials}</span>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .gen {
+    background:
+      radial-gradient(120% 80% at 0% 0%, color-mix(in oklab, var(--c) 30%, #0b0f14), transparent 60%),
+      linear-gradient(160deg, #0d1218, #080a0e);
+  }
+  .orb {
+    position: absolute;
+    border-radius: 999px;
+    filter: blur(40px);
+    transition: transform 1.2s var(--ease-out);
+  }
+  .orb-1 {
+    width: 55%;
+    aspect-ratio: 1;
+    right: -10%;
+    top: -20%;
+    background: color-mix(in oklab, var(--c) 55%, transparent);
+  }
+  .orb-2 {
+    width: 35%;
+    aspect-ratio: 1;
+    left: 20%;
+    bottom: -25%;
+    background: color-mix(in oklab, var(--c) 30%, #4fc3f7 10%);
+    opacity: 0.6;
+  }
+  :global(.group:hover) .orb-1 { transform: translate(-12%, 12%) scale(1.1); }
+  :global(.group:hover) .orb-2 { transform: translate(15%, -10%); }
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, #ffffff0d 1px, transparent 1px),
+      linear-gradient(to bottom, #ffffff0d 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: linear-gradient(to bottom, #000, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
+  }
+  .glyph {
+    color: transparent;
+    -webkit-text-stroke: 1.5px color-mix(in oklab, var(--c) 80%, white);
+    opacity: 0.7;
+  }
+</style>

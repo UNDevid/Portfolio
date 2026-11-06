@@ -1,0 +1,62 @@
+---
+import PhoneMockup from './PhoneMockup.astro';
+import { site } from '../config';
+import { url } from '../utils';
+
+interface Props {
+  projectCount: number;
+}
+const { projectCount } = Astro.props;
+---
+
+<section class="relative overflow-hidden pt-32 pb-20 sm:pt-40 lg:pb-32">
+  <div class="bg-grid pointer-events-none absolute inset-0 -z-0" aria-hidden="true"></div>
+  <div class="relative mx-auto grid max-w-6xl items-center gap-16 px-4 sm:px-8 lg:grid-cols-[1.15fr_1fr]">
+    <div class="relative z-10">
+      {
+        site.available && (
+          <p class="chip mb-8 !border-[color-mix(in_oklab,var(--accent)_40%,transparent)] !text-[var(--accent)]" data-reveal>
+            <span class="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+            Disponibile per nuovi progetti
+          </p>
+        )
+      }
+      <p class="eyebrow mb-5" data-reveal style="--d:80ms">
+        <span class="text-[var(--accent)]">&gt;</span> <span data-scramble={site.role}>{site.role}</span>
+      </p>
+      <h1 class="display text-[clamp(2.7rem,6.2vw,5rem)] font-semibold" data-reveal style="--d:140ms">
+        Creo app che<br />
+        <span class="text-gradient">si sentono native.</span>
+      </h1>
+      <p class="mt-8 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:220ms">
+        {site.tagline} Dal pixel all'architettura, ogni dettaglio è una scelta.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-3" data-reveal style="--d:300ms">
+        <a href={url('/#progetti')} class="btn btn-primary" data-magnetic>
+          Guarda i progetti
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href={url('/#contatti')} class="btn btn-ghost" data-magnetic>Contattami</a>
+      </div>
+
+      <dl class="mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-[var(--color-line)] pt-8" data-reveal style="--d:380ms">
+        <div>
+          <dt class="eyebrow !text-[10px]">Progetti</dt>
+          <dd class="display mt-2 text-3xl font-semibold">{String(projectCount).padStart(2, '0')}</dd>
+        </div>
+        <div>
+          <dt class="eyebrow !text-[10px]">Piattaforme</dt>
+          <dd class="display mt-2 text-3xl font-semibold">03</dd>
+        </div>
+        <div>
+          <dt class="eyebrow !text-[10px]">In autonomia</dt>
+          <dd class="display mt-2 text-3xl font-semibold">100<span class="text-[var(--accent)]">%</span></dd>
+        </div>
+      </dl>
+    </div>
+
+    <div data-reveal style="--d:200ms">
+      <PhoneMockup />
+    </div>
+  </div>
+</section>

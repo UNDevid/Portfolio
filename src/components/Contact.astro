@@ -1,0 +1,64 @@
+---
+import { site } from '../config';
+---
+
+<section id="contatti" class="relative scroll-mt-24 overflow-hidden">
+  <div class="bg-grid pointer-events-none absolute inset-0 rotate-180" aria-hidden="true"></div>
+  <div class="relative mx-auto max-w-6xl px-4 py-28 text-center sm:px-8 sm:py-40">
+    <p class="eyebrow mb-6" data-reveal><span class="text-[var(--accent)]">03</span> / Contatti</p>
+    <h2 class="display mx-auto max-w-4xl text-[clamp(2.6rem,8vw,6rem)] font-semibold" data-reveal style="--d:80ms">
+      Hai un'idea?<br /><span class="text-gradient">Rendiamola un'app.</span>
+    </h2>
+    <p class="mx-auto mt-8 max-w-lg text-lg text-[var(--color-muted)]" data-reveal style="--d:160ms">
+      Raccontami il tuo progetto: ti rispondo al più presto.
+    </p>
+
+    <div class="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row" data-reveal style="--d:240ms">
+      <a href={`mailto:${site.email}`} class="btn btn-primary !px-7 !py-4 text-base" data-magnetic>
+        Scrivimi una email <span aria-hidden="true">→</span>
+      </a>
+      <button
+        type="button"
+        class="btn btn-ghost !py-4 font-mono !text-sm"
+        data-copy={site.email}
+        aria-live="polite"
+      >
+        <span data-copy-label>{site.email}</span>
+        <span class="text-[var(--color-dim)]" aria-hidden="true">⧉</span>
+      </button>
+    </div>
+
+    <ul class="mt-14 flex justify-center gap-6 font-mono text-sm" data-reveal style="--d:320ms">
+      {
+        site.socials.map((s) => (
+          <li>
+            <a href={s.href} target="_blank" rel="noopener" class="link-underline text-[var(--color-muted)] hover:text-white">
+              {s.label} ↗
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-6 font-mono text-xs text-[var(--color-dim)]">{site.location}</p>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+      btn.onclick = async () => {
+        const label = btn.querySelector('[data-copy-label]');
+        try {
+          await navigator.clipboard.writeText(btn.dataset.copy!);
+          if (label) {
+            const prev = label.textContent;
+            label.textContent = 'Copiata ✓';
+            setTimeout(() => (label.textContent = prev), 1600);
+          }
+        } catch {
+          location.href = `mailto:${btn.dataset.copy}`;
+        }
+      };
+    });
+  });
+</script>

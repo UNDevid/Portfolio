@@ -1,0 +1,19 @@
+---
+import { stack } from '../config';
+const items = [...stack, ...stack];
+---
+
+<section class="relative border-y border-[var(--color-line)] bg-[var(--color-bg-2)]/60 py-6" aria-label="Tecnologie">
+  <div class="marquee overflow-hidden">
+    <ul class="marquee-track">
+      {
+        items.map((t, i) => (
+          <li class="flex items-center gap-10 pr-10 font-mono text-sm text-[var(--color-muted)]" aria-hidden={i >= stack.length ? 'true' : undefined}>
+            <span class="whitespace-nowrap transition-colors hover:text-white">{t}</span>
+            <span class="text-[var(--accent)] opacity-60">✦</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

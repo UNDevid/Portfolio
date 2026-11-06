@@ -1,0 +1,80 @@
+---
+const pillars = [
+  {
+    n: '01',
+    title: 'Architettura solida',
+    text: 'Clean Architecture, moduli separati e flussi di dati unidirezionali. Codice testabile, che regge la crescita del prodotto.',
+    tag: 'MVVM · MVI · DI',
+  },
+  {
+    n: '02',
+    title: 'UI curata al pixel',
+    text: 'Interfacce in Jetpack Compose e Flutter fedeli al design, con motion design significativo e Material 3 usato con criterio.',
+    tag: 'Compose · Motion',
+  },
+  {
+    n: '03',
+    title: 'Performance reali',
+    text: 'Avvio rapido, liste fluide a 120Hz, consumi sotto controllo. Misuro con profiler e baseline profile, non a sensazione.',
+    tag: 'Profiling · R8',
+  },
+  {
+    n: '04',
+    title: 'Accessibile a tutti',
+    text: 'Contrasto, TalkBack, dimensioni del testo dinamiche. Un\'app accessibile è semplicemente un\'app fatta meglio.',
+    tag: 'a11y · i18n',
+  },
+];
+
+const steps = ['Ascolto', 'Prototipo', 'Sviluppo', 'Rilascio', 'Evoluzione'];
+---
+
+<section id="approccio" class="relative scroll-mt-24 border-t border-[var(--color-line)] bg-[var(--color-bg-2)]/50">
+  <div class="mx-auto max-w-6xl px-4 py-24 sm:px-8 sm:py-32">
+    <div class="grid gap-12 lg:grid-cols-[1fr_1.4fr]">
+      <div class="lg:sticky lg:top-32 lg:self-start">
+        <p class="eyebrow mb-4" data-reveal><span class="text-[var(--accent)]">02</span> / Approccio</p>
+        <h2 class="display text-[clamp(2.2rem,5vw,3.6rem)] font-semibold" data-reveal style="--d:80ms">
+          Sviluppo con<br />occhio da designer.
+        </h2>
+        <p class="mt-6 max-w-md leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:160ms">
+          Lavoro in autonomia end-to-end: dall'analisi con il cliente fino alla pubblicazione sugli store.
+          Codice e design sono la stessa conversazione.
+        </p>
+        <ol class="mt-10 flex flex-wrap items-center gap-2 font-mono text-xs text-[var(--color-muted)]" data-reveal style="--d:240ms">
+          {
+            steps.map((s, i) => (
+              <li class="flex items-center gap-2">
+                <span class="chip !text-white">{s}</span>
+                {i < steps.length - 1 && <span class="text-[var(--color-dim)]">→</span>}
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {
+          pillars.map((p, i) => (
+            <li
+              class="group relative overflow-hidden rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] p-7 transition-colors duration-500 hover:border-[color-mix(in_oklab,var(--accent)_40%,transparent)]"
+              data-reveal
+              style={`--d:${i * 90}ms`}
+            >
+              <span class="font-mono text-xs text-[var(--accent)]">{p.n}</span>
+              <h3 class="display mt-10 text-2xl font-semibold">{p.title}</h3>
+              <p class="mt-3 text-[0.95rem] leading-relaxed text-[var(--color-muted)]">{p.text}</p>
+              <p class="mt-6 font-mono text-[11px] text-[var(--color-dim)]">{p.tag}</p>
+              <span
+                class="display pointer-events-none absolute -right-2 -top-6 text-[7rem] font-bold text-white/[0.03] transition-transform duration-700 group-hover:-translate-x-3"
+                aria-hidden="true"
+              >
+                {p.n}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

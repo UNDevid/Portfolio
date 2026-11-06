@@ -1,0 +1,64 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+import { platforms, type Platform } from '../config';
+
+interface Props {
+  projects: CollectionEntry<'projects'>[];
+}
+const { projects } = Astro.props;
+const used = [...new Set(projects.map((p) => p.data.platform))] as Platform[];
+const filters = [
+  { id: 'all', label: 'Tutti', count: projects.length },
+  ...used.map((id) => ({
+    id,
+    label: platforms[id].label,
+    count: projects.filter((p) => p.data.platform === id).length,
+  })),
+];
+---
+
+<section id="progetti" class="relative mx-auto max-w-6xl scroll-mt-24 px-4 py-24 sm:px-8 sm:py-32">
+  <div class="mb-12 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+    <div>
+      <p class="eyebrow mb-4" data-reveal><span class="text-[var(--accent)]">01</span> / Lavori selezionati</p>
+      <h2 class="display text-[clamp(2.2rem,5vw,3.8rem)] font-semibold" data-reveal style="--d:80ms">
+        Progetti realizzati<br /><span class="text-[var(--color-dim)]">dall'idea allo store.</span>
+      </h2>
+    </div>
+    <div class="flex flex-wrap gap-2" role="group" aria-label="Filtra per piattaforma" data-reveal style="--d:160ms">
+      {
+        filters.map((f, i) => (
+          <button
+            type="button"
+            data-filter={f.id}
+            aria-pressed={i === 0 ? 'true' : 'false'}
+            class="filter-btn chip !px-4 !py-2 !text-xs transition-colors"
+          >
+            {f.label}
+            <span class="text-[var(--color-dim)]">{f.count}</span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <ul class="grid gap-5 md:grid-cols-2">
+    {projects.map((project, i) => <ProjectCard project={project} index={i} />)}
+  </ul>
+</section>
+
+<style>
+  .filter-btn:hover {
+    color: #fff;
+    border-color: var(--color-line-strong);
+  }
+  .filter-btn[aria-pressed='true'] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #04110a;
+  }
+  .filter-btn[aria-pressed='true'] span {
+    color: #04110a99;
+  }
+</style>

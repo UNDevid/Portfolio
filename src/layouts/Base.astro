@@ -1,0 +1,65 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../config';
+import { url } from '../utils';
+
+interface Props {
+  title?: string;
+  description?: string;
+  accent?: string;
+}
+
+const {
+  title = `${site.name} — ${site.role}`,
+  description = site.tagline,
+  accent,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="it" style={accent ? `--accent:${accent}` : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#07090d" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <ClientRouter />
+  </head>
+  <body class="noise min-h-dvh">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] btn btn-primary"
+      >Vai al contenuto</a
+    >
+    <div class="spotlight" aria-hidden="true"></div>
+    <div
+      data-progress
+      class="fixed top-0 left-0 right-0 h-[2px] z-[70] origin-left scale-x-0"
+      style="background: linear-gradient(90deg, var(--color-droid), var(--color-flutter), var(--color-web))"
+      aria-hidden="true"
+      transition:persist
+    >
+    </div>
+    <Nav />
+    <main id="main" class="relative z-10">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import '../scripts/interactions.ts';
+    </script>
+  </body>
+</html>

@@ -1,0 +1,136 @@
+---
+// Mockup di un telefono con una finta UI in stile Material 3 / Compose, animata in CSS.
+---
+
+<div class="phone-scene relative mx-auto w-full max-w-[420px]" aria-hidden="true">
+  <!-- finestra di codice alle spalle -->
+  <div class="code-window glass absolute -left-4 top-10 hidden w-[330px] rounded-2xl p-4 font-mono text-[11px] leading-relaxed md:block lg:-left-6 xl:-left-20">
+    <div class="mb-3 flex items-center gap-1.5">
+      <span class="h-2.5 w-2.5 rounded-full bg-[#ff5f57]"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-[#febc2e]"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-[#28c840]"></span>
+      <span class="ml-2 text-[var(--color-dim)]">HomeScreen.kt</span>
+    </div>
+<pre class="whitespace-pre text-[#b7c0cc]"><span class="k">@Composable</span>
+<span class="k">fun</span> <span class="f">HomeScreen</span>(vm: <span class="t">HomeViewModel</span>) &#123;
+  <span class="k">val</span> state <span class="k">by</span> vm.state
+    .<span class="f">collectAsStateWithLifecycle</span>()
+
+  <span class="t">LazyColumn</span> &#123;
+    <span class="f">items</span>(state.projects) &#123;
+      <span class="t">ProjectCard</span>(it)
+    &#125;
+  &#125;
+&#125;</pre>
+  </div>
+
+  <!-- telefono -->
+  <div class="phone relative z-10 ml-auto aspect-[9/19] w-[260px] rounded-[44px] p-[10px] sm:w-[280px]" data-tilt="10">
+    <div class="screen relative h-full w-full overflow-hidden rounded-[36px] bg-[#0b0f14]">
+      <!-- glare -->
+      <div class="pointer-events-none absolute inset-0 z-20" style="background: radial-gradient(400px circle at var(--gx,30%) var(--gy,0%), #ffffff14, transparent 45%)"></div>
+      <!-- status bar -->
+      <div class="flex items-center justify-between px-6 pt-3 font-mono text-[10px] text-white/70">
+        <span>9:41</span>
+        <span class="h-4 w-4 rounded-full bg-black ring-1 ring-white/10"></span>
+        <span>5G ▮▮▮</span>
+      </div>
+      <!-- app bar -->
+      <div class="px-5 pt-5">
+        <p class="text-[10px] text-white/50">Bentornato 👋</p>
+        <p class="font-[var(--font-display)] text-lg font-semibold text-white">I miei progetti</p>
+      </div>
+      <!-- chips -->
+      <div class="flex gap-1.5 px-5 pt-3">
+        <span class="rounded-full bg-[var(--color-droid)] px-2.5 py-1 text-[9px] font-semibold text-black">Android</span>
+        <span class="rounded-full border border-white/15 px-2.5 py-1 text-[9px] text-white/70">Flutter</span>
+        <span class="rounded-full border border-white/15 px-2.5 py-1 text-[9px] text-white/70">Web</span>
+      </div>
+      <!-- lista animata -->
+      <div class="feed space-y-2.5 px-4 pt-4">
+        {
+          [
+            ['#3DDC84', 'Compose UI', 72],
+            ['#4FC3F7', 'Flutter app', 54],
+            ['#C084FC', 'Web app', 88],
+            ['#FBBF24', 'Offline sync', 40],
+          ].map(([c, t, w], i) => (
+            <div class="item flex items-center gap-3 rounded-2xl bg-white/[0.04] p-3 ring-1 ring-white/5" style={`--i:${i}`}>
+              <span class="h-9 w-9 shrink-0 rounded-xl" style={`background: linear-gradient(135deg, ${c}, ${c}33)`} />
+              <div class="min-w-0 flex-1">
+                <p class="text-[11px] font-medium text-white">{t}</p>
+                <div class="mt-1.5 h-1.5 rounded-full bg-white/10">
+                  <div class="bar h-full rounded-full" style={`width:${w}%; background:${c}`} />
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <!-- FAB -->
+      <div class="fab absolute bottom-14 right-5 grid h-12 w-12 place-items-center rounded-2xl bg-[var(--color-droid)] text-xl font-bold text-black shadow-[0_8px_30px_-6px_var(--color-droid)]">+</div>
+      <!-- bottom nav -->
+      <div class="absolute inset-x-0 bottom-0 flex justify-around border-t border-white/5 bg-white/[0.02] py-3">
+        <span class="h-1.5 w-8 rounded-full bg-[var(--color-droid)]"></span>
+        <span class="h-1.5 w-8 rounded-full bg-white/15"></span>
+        <span class="h-1.5 w-8 rounded-full bg-white/15"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- bagliore -->
+  <div class="glow absolute -right-10 top-1/4 -z-0 h-72 w-72 rounded-full blur-3xl"></div>
+</div>
+
+<style>
+  .phone {
+    background: linear-gradient(145deg, #2a313c, #0d1117 40%, #1b2129);
+    box-shadow:
+      inset 0 0 0 1px #ffffff1f,
+      0 50px 100px -30px #000,
+      0 0 0 1px #000;
+    transition: transform 0.6s var(--ease-out);
+    transform-style: preserve-3d;
+    animation: float 7s ease-in-out infinite;
+  }
+  .code-window {
+    animation: float 9s ease-in-out -2s infinite;
+    box-shadow: 0 30px 80px -30px #000;
+  }
+  .glow {
+    background: radial-gradient(circle, color-mix(in oklab, var(--color-droid) 45%, transparent), transparent 70%);
+    opacity: 0.5;
+  }
+  .k { color: #c792ea; }
+  .f { color: #82aaff; }
+  .t { color: var(--color-droid); }
+
+  .item {
+    animation: slideIn 6s var(--ease-out) infinite;
+    animation-delay: calc(var(--i) * 0.15s);
+  }
+  .bar {
+    transform-origin: left;
+    animation: grow 6s var(--ease-out) infinite;
+    animation-delay: calc(var(--i) * 0.15s + 0.2s);
+  }
+  .fab { animation: pop 6s var(--ease-out) infinite; }
+
+  @keyframes float {
+    50% { translate: 0 -14px; }
+  }
+  @keyframes slideIn {
+    0% { opacity: 0; transform: translateY(16px) scale(0.97); }
+    12%, 88% { opacity: 1; transform: none; }
+    100% { opacity: 0; transform: translateY(-8px); }
+  }
+  @keyframes grow {
+    0%, 8% { transform: scaleX(0); }
+    35%, 100% { transform: scaleX(1); }
+  }
+  @keyframes pop {
+    0%, 30% { transform: scale(0) rotate(-90deg); }
+    42%, 90% { transform: scale(1) rotate(0); }
+    100% { transform: scale(0); }
+  }
+</style>
