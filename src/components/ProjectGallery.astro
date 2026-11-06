@@ -2,13 +2,14 @@
 // Galleria del progetto.
 // - phone: screenshot in cornici da telefono, in fila orizzontale scorrevole
 // - art:   opere in una parete da galleria, con numero e titolo
+// - promo: immagini dello store già impaginate (cornice inclusa), mostrate così come sono
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
 interface Props {
   title: string;
   shots: { src: ImageMetadata; caption: string; label?: string }[];
-  variant?: 'phone' | 'art';
+  variant?: 'phone' | 'art' | 'promo';
   heading?: string;
 }
 const { title, shots, variant = 'phone', heading = variant === 'art' ? 'Le opere' : 'Schermate' } = Astro.props;
@@ -20,7 +21,25 @@ const { title, shots, variant = 'phone', heading = variant === 'art' ? 'Le opere
   </div>
 
   {
-    variant === 'phone' ? (
+    variant === 'promo' ? (
+      <ul class="gallery flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-6 sm:gap-8 sm:px-8 lg:justify-center">
+        {shots.map((s, i) => (
+          <li class="shrink-0 snap-center" data-reveal style={`--d:${i * 90}ms`}>
+            <figure>
+              <Image
+                src={s.src}
+                alt={`${title}: ${s.caption}`}
+                widths={[260, 520, 780].filter((w) => w <= s.src.width)}
+                sizes="(min-width: 640px) 260px, 220px"
+                quality={85}
+                class="promo block w-[220px] rounded-2xl sm:w-[260px]"
+              />
+              <figcaption class="mt-4 text-center font-mono text-xs text-[var(--color-muted)]">{s.caption}</figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    ) : variant === 'phone' ? (
       <ul class="gallery flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-6 sm:gap-10 sm:px-8 lg:justify-center">
         {shots.map((s, i) => (
           <li class="shrink-0 snap-center" data-reveal style={`--d:${i * 90}ms`}>
@@ -29,8 +48,9 @@ const { title, shots, variant = 'phone', heading = variant === 'art' ? 'Le opere
                 <Image
                   src={s.src}
                   alt={`${title}: ${s.caption}`}
-                  widths={[240, 480]}
-                  sizes="240px"
+                  widths={[240, 480, 720]}
+                  sizes="(min-width: 640px) 226px, 196px"
+                  quality={85}
                   class="block aspect-[1100/2442] w-full rounded-[28px] object-cover"
                 />
               </div>
@@ -48,8 +68,9 @@ const { title, shots, variant = 'phone', heading = variant === 'art' ? 'Le opere
                 <Image
                   src={s.src}
                   alt={s.label ? `${s.label}, ${s.caption}` : s.caption}
-                  widths={[320, 640]}
-                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+                  widths={[320, 480, 640, 800].filter((w) => w <= s.src.width)}
+                  sizes="(min-width: 1152px) 252px, (min-width: 1024px) 23vw, (min-width: 640px) 31vw, 46vw"
+                  quality={85}
                   class="block aspect-[3/4] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                 />
               </div>
@@ -86,6 +107,11 @@ const { title, shots, variant = 'phone', heading = variant === 'art' ? 'Le opere
       0 0 0 1px color-mix(in oklab, var(--accent) 50%, transparent),
       0 40px 70px -30px #000,
       0 0 50px -25px var(--accent);
+  }
+  .promo {
+    box-shadow:
+      0 0 0 1px #ffffff14,
+      0 40px 80px -30px #000;
   }
   .gallery {
     scrollbar-width: thin;

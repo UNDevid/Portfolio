@@ -1,0 +1,112 @@
+---
+// "Il concerto": i pulsanti play della copertina si accendono a turno come se venissero suonati,
+// con un'onda sonora che si allarga, e qualche scintilla che sale dal basso.
+// Le posizioni sono quelle della composizione originale (1280×800, ancorata a sinistra).
+const pads = [6.5625, 12.8125, 19.0625, 25.3125];
+
+// Scintille: posizioni e tempi fissati al build, così ogni visita è uguale e leggera.
+let seed = 7;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const embers = Array.from({ length: 16 }, () => ({
+  left: 30 + rnd() * 68,
+  size: 2 + rnd() * 3,
+  dur: 5 + rnd() * 5,
+  delay: -rnd() * 10,
+  drift: (rnd() - 0.5) * 60,
+}));
+---
+
+<div class="sb-concert pointer-events-none absolute inset-0" aria-hidden="true">
+  <div class="stage">
+    {
+      pads.map((left, i) => (
+        <span class="pad" style={`left:${left}%; --i:${i}`}>
+          <span class="ring" />
+        </span>
+      ))
+    }
+    {
+      embers.map((e) => (
+        <span
+          class="ember"
+          style={`left:${e.left}%; width:${e.size}px; height:${e.size}px; --dur:${e.dur}s; --delay:${e.delay}s; --drift:${e.drift}px`}
+        />
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .sb-concert {
+    container-type: size;
+    overflow: hidden;
+  }
+  .stage {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: max(100cqw, 160cqh);
+    aspect-ratio: 16 / 10;
+    transform: translateY(-50%);
+  }
+  .pad {
+    position: absolute;
+    top: 66.5%;
+    width: 5%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid #ffffff55;
+    background: #ffffff0d;
+    animation: pad-on 3.2s ease-out infinite;
+    animation-delay: calc(var(--i) * 0.8s);
+  }
+  .pad::after {
+    content: '';
+    position: absolute;
+    left: 56%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-left: 1.4cqw solid #fff;
+    border-top: 0.86cqw solid transparent;
+    border-bottom: 0.86cqw solid transparent;
+  }
+  .ring {
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 2px solid #ff7a3d;
+    opacity: 0;
+    animation: wave 3.2s ease-out infinite;
+    animation-delay: calc(var(--i) * 0.8s);
+  }
+  .ember {
+    position: absolute;
+    bottom: -2%;
+    border-radius: 50%;
+    background: #ffb27a;
+    box-shadow: 0 0 6px #ff6a2a, 0 0 14px #ff3b1a;
+    opacity: 0;
+    animation: rise var(--dur) linear infinite;
+    animation-delay: var(--delay);
+  }
+  @keyframes pad-on {
+    0% { border-color: #ff7a3d; background: #ff7a3d40; box-shadow: 0 0 28px #ff5a1a99; }
+    22% { border-color: #ff7a3d; background: #ff7a3d33; box-shadow: 0 0 22px #ff5a1a77; }
+    30%, 100% { border-color: #ffffff55; background: #ffffff0d; box-shadow: none; }
+  }
+  @keyframes wave {
+    0% { opacity: 0.9; transform: scale(1); }
+    30% { opacity: 0; transform: scale(2.2); }
+    100% { opacity: 0; transform: scale(2.2); }
+  }
+  @keyframes rise {
+    0% { opacity: 0; transform: translate(0, 0); }
+    10% { opacity: 0.9; }
+    80% { opacity: 0.5; }
+    100% { opacity: 0; transform: translate(var(--drift), -85cqh); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pad, .ring, .ember { animation: none; }
+    .ember { display: none; }
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+// "Ken Burns": zoom lentissimo sulla foto della copertina, con una luce di sole che la attraversa.
+---
+
+<div class="ken-burns pointer-events-none absolute inset-0" aria-hidden="true">
+  <span class="sun"></span>
+</div>
+
+<style>
+  /* Lo zoom agisce sull'immagine della copertina che precede l'effetto */
+  :global(.cover:has(> .ken-burns) > img) {
+    animation: kb-zoom 22s ease-in-out infinite alternate;
+    transform-origin: 62% 45%;
+  }
+  .ken-burns {
+    overflow: hidden;
+    mix-blend-mode: soft-light;
+  }
+  .sun {
+    position: absolute;
+    top: -30%;
+    left: -60%;
+    width: 55%;
+    height: 160%;
+    background: linear-gradient(90deg, transparent, #fff3c6cc 45%, #ffe39a99 55%, transparent);
+    filter: blur(24px);
+    transform: rotate(18deg);
+    animation: kb-sun 11s ease-in-out infinite;
+  }
+  @keyframes kb-zoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+  }
+  @keyframes kb-sun {
+    0%, 15% { left: -60%; opacity: 0; }
+    30% { opacity: 1; }
+    70% { opacity: 1; }
+    85%, 100% { left: 120%; opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.cover:has(> .ken-burns) > img) { animation: none; }
+    .sun { display: none; }
+  }
+</style>

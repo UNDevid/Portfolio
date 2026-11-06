@@ -1,0 +1,140 @@
+---
+// Il logo di Beat Runner che si accende come un'insegna al neon, come nello splash dell'app:
+// due sfarfallii, il bagliore che sale, poi una luce che attraversa le lettere e il bagliore che "respira".
+import logo from '../../assets/brand/beatrunner-logo.svg?raw';
+
+const mask = `url("data:image/svg+xml;utf8,${encodeURIComponent(logo)}")`;
+---
+
+<div class="br-neon pointer-events-none absolute inset-0" data-neon style={`--logo:${mask}`}>
+  <div class="shade absolute inset-0"></div>
+  <div class="copy absolute">
+    <div class="logo" role="img" aria-label="Beat Runner">
+      <span class="layer glow"></span>
+      <span class="layer letters"></span>
+      <span class="layer sweep"></span>
+    </div>
+    <p class="tagline">La colonna sonora <em>della tua corsa</em></p>
+  </div>
+</div>
+
+<style>
+  .br-neon {
+    --volt: #c1ef00;
+    container-type: inline-size;
+  }
+  .shade {
+    background: linear-gradient(90deg, #0a0b0d 0%, #0a0b0dee 32%, #0a0b0d66 58%, transparent 80%);
+  }
+  .copy {
+    left: 7cqw;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 46cqw;
+  }
+  .logo {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 633.3 / 89;
+  }
+  .layer {
+    position: absolute;
+    inset: 0;
+    -webkit-mask: var(--logo) center / contain no-repeat;
+    mask: var(--logo) center / contain no-repeat;
+  }
+  .letters {
+    background: var(--volt);
+    opacity: 0;
+  }
+  .glow {
+    background: var(--volt);
+    filter: blur(1.4cqw);
+    transform: scale(1.02);
+    opacity: 0;
+  }
+  .sweep {
+    background: linear-gradient(105deg, transparent 40%, #fffd 50%, transparent 60%) no-repeat;
+    background-size: 250% 100%;
+    background-position: 130% 0;
+  }
+  .tagline {
+    margin-top: 2.4cqw;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 3.4cqw;
+    line-height: 1.15;
+    color: #fff;
+    letter-spacing: -0.01em;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.8s 0.5s var(--ease-out), transform 0.8s 0.5s var(--ease-out);
+  }
+  .tagline em {
+    font-style: normal;
+    display: block;
+    color: var(--volt);
+  }
+
+  /* Acceso: quando la copertina entra nello schermo */
+  .br-neon.is-on .letters {
+    animation: flicker 0.38s linear forwards;
+  }
+  .br-neon.is-on .glow {
+    animation:
+      glow-in 0.55s 0.15s ease-out forwards,
+      breathe 2.8s 0.9s ease-in-out infinite alternate;
+  }
+  .br-neon.is-on .sweep {
+    animation: sweep 5s 0.7s ease-in-out infinite;
+  }
+  .br-neon.is-on .tagline {
+    opacity: 1;
+    transform: none;
+  }
+
+  @keyframes flicker {
+    0% { opacity: 0; }
+    21% { opacity: 1; }
+    37% { opacity: 0.15; }
+    58% { opacity: 1; }
+    76% { opacity: 0.35; }
+    100% { opacity: 1; }
+  }
+  @keyframes glow-in {
+    to { opacity: 0.85; }
+  }
+  @keyframes breathe {
+    from { opacity: 0.85; }
+    to { opacity: 0.45; }
+  }
+  @keyframes sweep {
+    0% { background-position: 130% 0; }
+    22%, 100% { background-position: -30% 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .letters { opacity: 1; }
+    .glow { opacity: 0.7; }
+    .tagline { opacity: 1; transform: none; }
+    .sweep { display: none; }
+  }
+</style>
+
+<script>
+  // Accende l'insegna quando la copertina diventa visibile (una volta per pagina).
+  document.addEventListener('astro:page-load', () => {
+    const els = document.querySelectorAll<HTMLElement>('[data-neon]');
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-on');
+            io.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.35 },
+    );
+    els.forEach((el) => io.observe(el));
+  });
+</script>

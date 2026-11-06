@@ -52,6 +52,13 @@ body {
   border-radius: 6px;
 }
 
+/* ── Modalità di lettura ──────────────────────────────────── */
+/* Predefinita (anche senza JS): il racconto per tutti. "tech" aggiunge i dettagli tecnici. */
+html:not([data-view='tech']) .only-tech,
+html[data-view='tech'] .only-plain {
+  display: none !important;
+}
+
 /* ── Fondale: griglia + grana ─────────────────────────────── */
 .bg-grid {
   background-image:

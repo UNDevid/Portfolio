@@ -7,9 +7,10 @@ client: Progetto personale
 role: Ideazione, design e sviluppo
 status: In arrivo su Google Play
 stack: [Kotlin, Jetpack Compose, MVI, Hilt, Navigation 3, Coroutines & Flow, Firebase, Google Maps, Glance, Baseline Profile]
-accent: '#C6F432'
-cover: ../../assets/projects/beatrunner/cover.jpg
-coverPosition: left
+accent: '#C1EF00'
+cover: ../../assets/projects/beatrunner/cover-photo.jpg
+coverEffect: beatrunner-neon
+coverPosition: right
 featured: true
 order: 1
 highlights:
@@ -26,6 +27,17 @@ gallery:
     caption: Dettaglio della corsa
   - src: ../../assets/projects/beatrunner/diary.jpg
     caption: Diario mese per mese
+plain:
+  summary: Un'app per chi corre con la musica nelle orecchie. Registra percorso, tempi e passi, e propone playlist pensate per correre. L'ho ideata, disegnata e sviluppata da solo.
+  tags: [App Android, Sport e musica, In arrivo su Google Play]
+  challenge: Un'app che avevo creato nel 2021 era invecchiata. Era difficile da aggiornare e il suo aspetto era datato. Volevo trasformarla in un prodotto moderno, pronto per lo store.
+  solution: L'ho ricostruita da cima a fondo senza mai smettere di farla funzionare. Grafica nuova, nuove funzioni (widget, condivisione delle corse, conteggio dei passi, assistente vocale) e basi solide per crescere ancora.
+  result: Un'app curata in ogni dettaglio, veloce, in italiano e inglese, pronta per la pubblicazione su Google Play.
+  highlights:
+    - Ideazione, design e sviluppo in autonomia
+    - Funziona anche a schermo spento e senza rete
+    - Widget, condivisione social e assistente vocale
+    - Disponibile in italiano e inglese
 ---
 
 ## L'idea

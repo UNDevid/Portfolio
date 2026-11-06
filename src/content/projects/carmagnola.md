@@ -9,7 +9,8 @@ status: Online
 stack: [HTML5, CSS3, Bootstrap, JavaScript, jQuery, PHP, Google Maps API]
 accent: '#F0483E'
 cover: ../../assets/projects/carmagnola/cover.jpg
-order: 4
+coverEffect: ken-burns
+order: 5
 highlights:
   - Unici produttori del Corno di Carmagnola Presidio Slow Food
   - Schede di 8 varietà e 8 ricette
@@ -27,6 +28,17 @@ gallery:
     caption: Ricette
   - src: ../../assets/projects/carmagnola/contatti.jpg
     caption: Contatti
+plain:
+  summary: Il sito di un'azienda agricola di famiglia che dal 1926 coltiva il Peperone di Carmagnola. Presenta prodotti, ricette, storia e contatti.
+  tags: [Sito web, Agroalimentare, Online]
+  challenge: Un'azienda con quasi un secolo di storia e un prodotto Presidio Slow Food aveva bisogno di una vetrina online all'altezza.
+  solution: Un sito caldo e facile da usare anche da telefono. Racconta la famiglia, presenta le 8 varietà coltivate e propone ricette per gustarle.
+  result: Una presenza online curata che valorizza il prodotto e il territorio, e permette ai clienti di contattare l'azienda con un tocco.
+  highlights:
+    - Realizzato per un cliente
+    - Ottimizzato per smartphone
+    - 8 varietà e 8 ricette
+    - Contatti e mappa per raggiungere l'azienda
 ---
 
 ## Il cliente

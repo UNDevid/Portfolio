@@ -9,7 +9,8 @@ stack: [HTML5, CSS3, JavaScript, SVG, Canvas API, Media Session API]
 accent: '#E8A33D'
 monogram: Au
 cover: ../../assets/projects/athanor/cover.jpg
-order: 3
+coverEffect: athanor-breath
+order: 4
 galleryStyle: art
 galleryTitle: Le opere di Elisa Aiassa
 gallery:
@@ -32,10 +33,21 @@ highlights:
   - Palette dinamica estratta dalla copertina
   - Controlli audio nativi del sistema
 links:
-  - label: Visita la mostra
-    href: https://undevid.github.io/athanor/
+  - label: "Ascolta un'opera: Il genio"
+    href: https://undevid.github.io/athanor/11_il_genio.html
   - label: Codice su GitHub
     href: https://github.com/UNDevid/athanor
+plain:
+  summary: Il sito che accompagna la mostra d'arte di Elisa Aiassa. Davanti a ogni opera il visitatore apre la sua pagina con lo smartphone e ascolta la musica composta per lei.
+  tags: [Sito web, Arte e musica, Online]
+  challenge: Portare in una mostra d'arte un'esperienza d'ascolto immersiva, da vivere con lo smartphone davanti a ogni quadro, senza app da installare.
+  solution: 13 pagine leggere, una per opera. Ognuna si colora con i toni del quadro e funziona come un piccolo lettore musicale, con in più una versione di meditazione guidata.
+  result: Un'esperienza elegante e immediata per i visitatori, che dà voce alle opere di Elisa Aiassa e alla musica del trio Armonie di Gran Classe.
+  highlights:
+    - 13 opere, ognuna con la sua pagina
+    - Nessuna app da installare
+    - Musica e meditazione guidata
+    - Si apre all'istante, anche con poca rete
 ---
 
 ## Il contesto

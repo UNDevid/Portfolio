@@ -3,6 +3,13 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import type { Platform } from '../config';
+import BeatRunnerNeon from './effects/BeatRunnerNeon.astro';
+import HailFall from './effects/HailFall.astro';
+import AthanorBreath from './effects/AthanorBreath.astro';
+import KenBurns from './effects/KenBurns.astro';
+import SoundboardConcert from './effects/SoundboardConcert.astro';
+
+export type CoverEffect = 'beatrunner-neon' | 'hail' | 'athanor-breath' | 'ken-burns' | 'soundboard-concert';
 
 interface Props {
   title: string;
@@ -11,6 +18,9 @@ interface Props {
   cover?: ImageMetadata;
   monogram?: string;
   position?: 'left' | 'center' | 'right';
+  effect?: CoverEffect;
+  /** Larghezza mostrata, per scegliere la risoluzione giusta dal srcset. */
+  sizes?: string;
   name?: string;
   class?: string;
   eager?: boolean;
@@ -22,10 +32,14 @@ const {
   cover,
   monogram,
   position = 'center',
+  effect,
+  sizes = '(min-width: 1152px) 540px, (min-width: 768px) 50vw, 100vw',
   name,
   class: cls = '',
   eager = false,
 } = Astro.props;
+// Solo le larghezze che la sorgente può davvero fornire.
+const widths = cover ? [480, 720, 960, 1280, 1600, 1920, 2560].filter((w) => w <= cover.width) : [];
 const glyph = { android: '</>', flutter: '◆', web: '{ }' }[platform];
 const initials =
   monogram ??
@@ -47,8 +61,10 @@ const initials =
         class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
         style={`object-position: ${position} center`}
         loading={eager ? 'eager' : 'lazy'}
-        widths={[480, 800, 1200]}
-        sizes="(min-width: 1024px) 50vw, 100vw"
+        fetchpriority={eager ? 'high' : 'auto'}
+        widths={widths}
+        sizes={sizes}
+        quality={85}
       />
     ) : (
       <div class="gen absolute inset-0" aria-hidden="true">
@@ -60,6 +76,11 @@ const initials =
       </div>
     )
   }
+  {effect === 'beatrunner-neon' && <BeatRunnerNeon />}
+  {effect === 'hail' && <HailFall />}
+  {effect === 'athanor-breath' && <AthanorBreath />}
+  {effect === 'ken-burns' && <KenBurns />}
+  {effect === 'soundboard-concert' && <SoundboardConcert />}
 </div>
 
 <style>

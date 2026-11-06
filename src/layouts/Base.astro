@@ -35,7 +35,24 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary_large_image" />
-    <script is:inline>document.documentElement.classList.add('js');</script>
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        // Modalità di lettura: ?view=tech|plain nel link, altrimenti l'ultima scelta, altrimenti "plain".
+        var v = null;
+        try {
+          var q = new URLSearchParams(location.search).get('view');
+          if (q === 'tech' || q === 'plain') {
+            v = q;
+            localStorage.setItem('portfolio-view', q);
+          } else {
+            v = localStorage.getItem('portfolio-view');
+          }
+        } catch (e) {}
+        d.dataset.view = v === 'tech' ? 'tech' : 'plain';
+      })();
+    </script>
     <ClientRouter />
   </head>
   <body class="noise min-h-dvh">
@@ -60,6 +77,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <Footer />
     <script>
       import '../scripts/interactions.ts';
+      import '../scripts/view.ts';
     </script>
   </body>
 </html>

@@ -19,13 +19,16 @@ const projects = defineCollection({
       cover: image().optional(),
       /** Lato da tenere visibile quando la copertina viene ritagliata. */
       coverPosition: z.enum(['left', 'center', 'right']).default('center'),
+      /** Effetto animato sopra la copertina: logo neon di Beat Runner, oppure grandine che cade. */
+      coverEffect: z.enum(['beatrunner-neon', 'hail', 'athanor-breath', 'ken-burns', 'soundboard-concert']).optional(),
       /** Stato di pubblicazione, es. "Su Google Play". */
       status: z.string().optional(),
       /** Immagini nella pagina del progetto: screenshot in cornici da telefono, oppure opere d'arte. */
       gallery: z
         .array(z.object({ src: image(), caption: z.string(), label: z.string().optional() }))
         .default([]),
-      galleryStyle: z.enum(['phone', 'art']).default('phone'),
+      /** phone: screenshot in cornice · art: opere d'arte · promo: immagini dello store già impaginate */
+      galleryStyle: z.enum(['phone', 'art', 'promo']).default('phone'),
       galleryTitle: z.string().optional(),
       links: z
         .array(z.object({ label: z.string(), href: z.string() }))
@@ -33,6 +36,18 @@ const projects = defineCollection({
       featured: z.boolean().default(false),
       order: z.number().default(100),
       highlights: z.array(z.string()).default([]),
+      /**
+       * Il racconto per tutti (modalità predefinita): niente gergo, cosa fa e che risultato ha avuto.
+       * La parte tecnica (corpo Markdown, stack, highlights) appare solo con "Dettagli tecnici".
+       */
+      plain: z.object({
+        summary: z.string(),
+        tags: z.array(z.string()).max(3),
+        challenge: z.string(),
+        solution: z.string(),
+        result: z.string(),
+        highlights: z.array(z.string()).default([]),
+      }),
     }),
 });
 

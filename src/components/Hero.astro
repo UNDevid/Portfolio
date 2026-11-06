@@ -28,8 +28,11 @@ const { projectCount } = Astro.props;
         Creo app che<br />
         <span class="text-gradient">si sentono native.</span>
       </h1>
-      <p class="mt-8 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:220ms">
-        {site.tagline} Dal pixel all'architettura, ogni dettaglio è una scelta.
+      <p class="only-plain mt-8 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:220ms">
+        {site.intro.plain}
+      </p>
+      <p class="only-tech mt-8 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:220ms">
+        {site.intro.tech}
       </p>
       <div class="mt-10 flex flex-wrap gap-3" data-reveal style="--d:300ms">
         <a href={url('/#progetti')} class="btn btn-primary" data-magnetic>

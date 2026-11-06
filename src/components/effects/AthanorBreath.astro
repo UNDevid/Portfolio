@@ -1,0 +1,92 @@
+---
+// "Il respiro": i quattro tondi dei numeri maestri ruotano lentissimi, ognuno al suo ritmo,
+// e la luce calda pulsa come i bagliori di sfondo del sito della mostra.
+// I tondi sono sovrapposti esattamente a quelli già presenti nella copertina (2400×1200).
+import { Image } from 'astro:assets';
+import r11 from '../../assets/projects/athanor/roundel-11.webp';
+import r22 from '../../assets/projects/athanor/roundel-22.webp';
+import r33 from '../../assets/projects/athanor/roundel-33.webp';
+import r44 from '../../assets/projects/athanor/roundel-44.webp';
+
+// Posizioni in percentuale della composizione: x0 = 245px, passo 490px, lato 440px, top 380px.
+const roundels = [
+  { src: r11, left: 10.208, dur: 70, dir: 'normal' },
+  { src: r22, left: 30.625, dur: 95, dir: 'reverse' },
+  { src: r33, left: 51.042, dur: 80, dir: 'normal' },
+  { src: r44, left: 71.458, dur: 110, dir: 'reverse' },
+];
+---
+
+<div class="athanor-breath pointer-events-none absolute inset-0" aria-hidden="true">
+  <div class="stage">
+    <div class="light"></div>
+    {
+      roundels.map((r, i) => (
+        <div class="roundel" style={`left:${r.left}%; --dur:${r.dur}s; --dir:${r.dir}; --i:${i}`}>
+          <span class="halo" />
+          <Image src={r.src} alt="" widths={[220, 440]} sizes="(min-width: 1152px) 220px, 18vw" class="disc" />
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .athanor-breath {
+    container-type: size;
+    overflow: hidden;
+  }
+  /* La composizione 2:1 "copre" il contenitore come object-fit: cover, centrata */
+  .stage {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100cqw, 200cqh);
+    aspect-ratio: 2 / 1;
+    transform: translate(-50%, -50%);
+  }
+  .light {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(55% 60% at 50% 52%, #e8a33d55, transparent 70%);
+    mix-blend-mode: screen;
+    animation: tide 7s ease-in-out infinite alternate;
+  }
+  .roundel {
+    position: absolute;
+    top: 31.667%;
+    width: 18.333%;
+    aspect-ratio: 1;
+  }
+  .disc {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: spin var(--dur) linear infinite;
+    animation-direction: var(--dir);
+  }
+  .halo {
+    position: absolute;
+    inset: -12%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #f3c77a44 30%, transparent 70%);
+    animation: breathe 6s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * -1.5s);
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes tide {
+    from { opacity: 0.25; transform: scale(0.96); }
+    to { opacity: 0.85; transform: scale(1.04); }
+  }
+  @keyframes breathe {
+    from { opacity: 0.15; transform: scale(0.94); }
+    to { opacity: 0.7; transform: scale(1.04); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .athanor-breath { display: none; }
+  }
+</style>

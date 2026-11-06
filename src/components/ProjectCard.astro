@@ -36,6 +36,10 @@ const p = platforms[platform];
       cover={cover}
       monogram={monogram}
       position={project.data.coverPosition}
+      effect={project.data.coverEffect}
+      sizes={featured
+        ? '(min-width: 1152px) 660px, (min-width: 1024px) 58vw, 100vw'
+        : '(min-width: 1152px) 540px, (min-width: 768px) 50vw, 100vw'}
       name={`cover-${project.id}`}
       class:list={[
         'aspect-[16/10] w-full',
@@ -60,8 +64,12 @@ const p = platforms[platform];
       >
         {title}
       </h3>
-      <p class="text-[0.95rem] leading-relaxed text-[var(--color-muted)]">{summary}</p>
-      <ul class="mt-auto flex flex-wrap gap-1.5 pt-2">
+      <p class="only-plain text-[0.95rem] leading-relaxed text-[var(--color-muted)]">{project.data.plain.summary}</p>
+      <p class="only-tech text-[0.95rem] leading-relaxed text-[var(--color-muted)]">{summary}</p>
+      <ul class="only-plain mt-auto flex flex-wrap gap-1.5 pt-2">
+        {project.data.plain.tags.map((t) => <li class="chip">{t}</li>)}
+      </ul>
+      <ul class="only-tech mt-auto flex flex-wrap gap-1.5 pt-2">
         {stack.slice(0, 4).map((s) => <li class="chip">{s}</li>)}
       </ul>
       <span

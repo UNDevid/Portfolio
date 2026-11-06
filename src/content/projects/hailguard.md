@@ -9,6 +9,7 @@ status: Su Google Play
 stack: [Kotlin, Jetpack Compose, MVI, Hilt, WorkManager, Retrofit, DataStore, Google Maps, Open-Meteo, Glance]
 accent: '#7CC8FF'
 cover: ../../assets/projects/hailguard/cover.jpg
+coverEffect: hail
 order: 2
 highlights:
   - Rischio calcolato da CAPE e probabilità di precipitazione
@@ -25,6 +26,17 @@ gallery:
     caption: Dettaglio del rischio
   - src: ../../assets/projects/hailguard/settings.jpg
     caption: Intervallo e soglia
+plain:
+  summary: Avvisa fino a 24 ore prima se è prevista grandine nei luoghi che ti stanno a cuore, come casa, campi o auto. È in vendita su Google Play.
+  tags: [App Android, Meteo, Su Google Play]
+  challenge: Le app meteo parlano di "temporali" in generale. Chi ha un campo, una serra o un'auto all'aperto ha bisogno di sapere proprio se arriverà la grandine, e quando.
+  solution: Un'app che fa una cosa sola, e la fa bene. Controlla da sola fino a 6 luoghi e manda una notifica quando il rischio supera la soglia scelta, con l'orario previsto e la possibilità di avvisare gli altri.
+  result: Un prodotto pubblicato e venduto su Google Play con un prezzo unico, senza abbonamenti, in italiano e inglese.
+  highlights:
+    - Prodotto in vendita su Google Play
+    - Notifiche automatiche fino a 24 ore prima
+    - Per privati, agricoltori e assicuratori
+    - Widget per la schermata Home
 ---
 
 ## Il problema

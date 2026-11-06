@@ -1,28 +1,57 @@
 ---
+// Ogni pilastro ha il racconto per tutti (plain) e la versione tecnica (tech).
 const pillars = [
   {
     n: '01',
-    title: 'Architettura solida',
-    text: 'Clean Architecture, moduli separati e flussi di dati unidirezionali. Codice testabile, che regge la crescita del prodotto.',
-    tag: 'MVVM · MVI · DI',
+    plain: {
+      title: "Dall'idea allo store",
+      text: "Seguo il progetto dall'inizio alla fine: ascolto le esigenze, disegno l'esperienza, sviluppo l'app e la pubblico. Un solo interlocutore, nessun passaggio di mano.",
+      tag: 'Autonomia · Comunicazione',
+    },
+    tech: {
+      title: 'Architettura solida',
+      text: 'Clean Architecture, moduli separati e flussi di dati unidirezionali. Codice testabile, che regge la crescita del prodotto.',
+      tag: 'MVVM · MVI · DI',
+    },
   },
   {
     n: '02',
-    title: 'UI curata al pixel',
-    text: 'Interfacce in Jetpack Compose e Flutter fedeli al design, con motion design significativo e Material 3 usato con criterio.',
-    tag: 'Compose · Motion',
+    plain: {
+      title: 'Cura per il design',
+      text: 'Interfacce belle e intuitive, con animazioni che aiutano a capire invece di distrarre. Le persone devono sapere cosa fare senza pensarci.',
+      tag: 'Esperienza utente · Interfacce',
+    },
+    tech: {
+      title: 'UI curata al pixel',
+      text: 'Interfacce in Jetpack Compose e Flutter fedeli al design, con motion design significativo e Material 3 usato con criterio.',
+      tag: 'Compose · Motion',
+    },
   },
   {
     n: '03',
-    title: 'Performance reali',
-    text: 'Avvio rapido, liste fluide a 120Hz, consumi sotto controllo. Misuro con profiler e baseline profile, non a sensazione.',
-    tag: 'Profiling · R8',
+    plain: {
+      title: 'App veloci e affidabili',
+      text: 'Si aprono in un attimo, non si bloccano e funzionano anche quando la connessione è debole. La qualità si misura, non si promette.',
+      tag: 'Qualità · Stabilità',
+    },
+    tech: {
+      title: 'Performance reali',
+      text: 'Avvio rapido, liste fluide a 120Hz, consumi sotto controllo. Misuro con profiler e baseline profile, non a sensazione.',
+      tag: 'Profiling · R8',
+    },
   },
   {
     n: '04',
-    title: 'Accessibile a tutti',
-    text: 'Contrasto, TalkBack, dimensioni del testo dinamiche. Un\'app accessibile è semplicemente un\'app fatta meglio.',
-    tag: 'a11y · i18n',
+    plain: {
+      title: 'Pensate per tutti',
+      text: "Testi leggibili, colori a contrasto e piena compatibilità con le funzioni di accessibilità del telefono. Un'app accessibile è un'app fatta meglio.",
+      tag: 'Accessibilità · Più lingue',
+    },
+    tech: {
+      title: 'Accessibile a tutti',
+      text: "Contrasto, TalkBack, dimensioni del testo dinamiche. Un'app accessibile è semplicemente un'app fatta meglio.",
+      tag: 'a11y · i18n',
+    },
   },
 ];
 
@@ -62,9 +91,13 @@ const steps = ['Ascolto', 'Prototipo', 'Sviluppo', 'Rilascio', 'Evoluzione'];
               style={`--d:${i * 90}ms`}
             >
               <span class="font-mono text-xs text-[var(--accent)]">{p.n}</span>
-              <h3 class="display mt-10 text-2xl font-semibold">{p.title}</h3>
-              <p class="mt-3 text-[0.95rem] leading-relaxed text-[var(--color-muted)]">{p.text}</p>
-              <p class="mt-6 font-mono text-[11px] text-[var(--color-dim)]">{p.tag}</p>
+              {(['plain', 'tech'] as const).map((v) => (
+                <div class={`only-${v}`}>
+                  <h3 class="display mt-10 text-2xl font-semibold">{p[v].title}</h3>
+                  <p class="mt-3 text-[0.95rem] leading-relaxed text-[var(--color-muted)]">{p[v].text}</p>
+                  <p class="mt-6 font-mono text-[11px] text-[var(--color-dim)]">{p[v].tag}</p>
+                </div>
+              ))}
               <span
                 class="display pointer-events-none absolute -right-2 -top-6 text-[7rem] font-bold text-white/[0.03] transition-transform duration-700 group-hover:-translate-x-3"
                 aria-hidden="true"

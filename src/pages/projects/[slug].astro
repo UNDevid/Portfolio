@@ -28,9 +28,15 @@ const meta = [
   { k: 'Piattaforma', v: p.label },
   ...(d.role ? [{ k: 'Ruolo', v: d.role }] : []),
 ];
+
+const story = [
+  { label: 'La sfida', text: d.plain.challenge },
+  { label: 'Cosa ho fatto', text: d.plain.solution },
+  { label: 'Il risultato', text: d.plain.result },
+];
 ---
 
-<Base title={`${d.title} — Case study`} description={d.summary} accent={d.accent}>
+<Base title={`${d.title} — Case study`} description={d.plain.summary} accent={d.accent}>
   <article class="relative">
     <div class="bg-grid pointer-events-none absolute inset-x-0 top-0 h-[600px]" aria-hidden="true"></div>
 
@@ -57,7 +63,10 @@ const meta = [
       >
         {d.title}
       </h1>
-      <p class="mt-6 max-w-2xl text-xl leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:120ms">
+      <p class="only-plain mt-6 max-w-2xl text-xl leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:120ms">
+        {d.plain.summary}
+      </p>
+      <p class="only-tech mt-6 max-w-2xl text-xl leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:120ms">
         {d.summary}
       </p>
 
@@ -81,6 +90,8 @@ const meta = [
         cover={d.cover}
         monogram={d.monogram}
         position={d.coverPosition}
+        effect={d.coverEffect}
+        sizes="(min-width: 1152px) 1088px, calc(100vw - 32px)"
         name={`cover-${project.id}`}
         eager
         class="aspect-[16/9] w-full rounded-3xl border border-[var(--color-line)] sm:aspect-[21/9]"
@@ -88,12 +99,60 @@ const meta = [
     </div>
 
     <div class="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-8 lg:grid-cols-[1fr_280px]">
-      <div class="prose-case max-w-2xl" data-reveal>
+      <!-- Il racconto per tutti -->
+      <div class="only-plain max-w-2xl">
+        <h2 class="eyebrow mb-8" data-reveal><span class="text-[var(--accent)]">▸</span> In breve</h2>
+        <ol class="story space-y-4">
+          {
+            story.map((s, i) => (
+              <li
+                class="relative rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] p-7 sm:p-8"
+                data-reveal
+                style={`--d:${i * 90}ms`}
+              >
+                <p class="font-mono text-xs text-[var(--accent)]">{String(i + 1).padStart(2, '0')} · {s.label}</p>
+                <p class="mt-3 text-lg leading-relaxed text-[#c9d1db]">{s.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+
+        <div
+          class="mt-10 flex flex-col gap-5 rounded-3xl border border-dashed border-[var(--color-line-strong)] p-7 sm:flex-row sm:items-center sm:justify-between"
+          data-reveal
+        >
+          <div>
+            <p class="display text-xl font-semibold">Ti interessa il lato tecnico?</p>
+            <p class="mt-1 text-sm text-[var(--color-muted)]">Architettura, stack e scelte di codice di questo progetto.</p>
+          </div>
+          <button type="button" class="btn btn-ghost shrink-0 font-mono !text-sm" data-view-set="tech">
+            <span class="text-[var(--accent)]" aria-hidden="true">&lt;/&gt;</span> Mostra i dettagli tecnici
+          </button>
+        </div>
+      </div>
+
+      <!-- I dettagli tecnici -->
+      <div class="only-tech prose-case max-w-2xl" data-reveal>
         <Content />
       </div>
 
       <aside class="space-y-8 lg:sticky lg:top-28 lg:self-start" data-reveal style="--d:120ms">
-        <div>
+        {
+          d.plain.highlights.length > 0 && (
+            <div class="only-plain">
+              <h2 class="eyebrow mb-4">Punti chiave</h2>
+              <ul class="space-y-3 text-sm text-[var(--color-muted)]">
+                {d.plain.highlights.map((h) => (
+                  <li class="flex gap-3">
+                    <span class="text-[var(--accent)]">✦</span>
+                    {h}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+        <div class="only-tech">
           <h2 class="eyebrow mb-4">Stack</h2>
           <ul class="flex flex-wrap gap-1.5">
             {d.stack.map((s) => <li class="chip">{s}</li>)}
@@ -101,7 +160,7 @@ const meta = [
         </div>
         {
           d.highlights.length > 0 && (
-            <div>
+            <div class="only-tech">
               <h2 class="eyebrow mb-4">Highlights</h2>
               <ul class="space-y-3 text-sm text-[var(--color-muted)]">
                 {d.highlights.map((h) => (
