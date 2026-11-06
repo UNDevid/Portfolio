@@ -74,10 +74,17 @@ function tilt() {
 function scrollUi() {
   const bar = document.querySelector<HTMLElement>('[data-progress]');
   const nav = document.querySelector<HTMLElement>('[data-nav]');
-  const update = () => {
-    const h = document.documentElement.scrollHeight - innerHeight;
+  const root = document.documentElement;
+  let idle = 0;
+  const update = (e?: Event) => {
+    const h = root.scrollHeight - innerHeight;
     if (bar) bar.style.transform = `scaleX(${h > 0 ? scrollY / h : 0})`;
     nav?.toggleAttribute('data-scrolled', scrollY > 24);
+    if (!e) return;
+    // La scrollbar si accende nel colore accento mentre si scorre, poi torna discreta.
+    root.classList.add('is-scrolling');
+    clearTimeout(idle);
+    idle = window.setTimeout(() => root.classList.remove('is-scrolling'), 700);
   };
   update();
   on(window, 'scroll', update, { passive: true });

@@ -1,59 +1,27 @@
 # Davide Valentino — Portfolio
 
-Portfolio personale costruito con **Astro 7** + **Tailwind CSS 4**, pubblicato su GitHub Pages.
+Senior Android Developer. Progetto e realizzo app Android, app Flutter e siti web, dall'idea alla pubblicazione sugli store.
 
-## Sviluppo
+**→ [undevid.github.io/Portfolio](https://undevid.github.io/Portfolio/)**
 
-```bash
-npm install
-npm run dev      # http://localhost:4321
-npm run build    # genera ./dist
-npm run check    # type-check
-```
+[![Anteprima del portfolio](.github/preview.jpg)](https://undevid.github.io/Portfolio/)
 
-Richiede Node ≥ 26.
+## Progetti
 
-## Dove modificare
+| Progetto | Cosa è | |
+|---|---|---|
+| **Beat Runner** | App Android per correre con la musica | In arrivo su Google Play |
+| **HailGuard** | Avvisi di grandine fino a 24 ore prima | [Google Play](https://play.google.com/store/apps/details?id=it.ildevid.hailguard) |
+| **Domenico Bini Soundboard** | App per i fan del Maestro, 5,0 ★ | [Google Play](https://play.google.com/store/apps/details?id=it.ildevid.domenicobinisoundboard) |
+| **L'Athanor dell'Alchimista** | Il sito della mostra di Elisa Aiassa | [Ascolta un'opera](https://undevid.github.io/athanor/11_il_genio.html) |
+| **Agricola Cavagliato** | Sito di un'azienda agricola dal 1926 | [peperonedicarmagnola.it](https://www.peperonedicarmagnola.it/) |
 
-| Cosa | File |
-|---|---|
-| Nome, ruolo, email, social, stack | `src/config.ts` |
-| Progetti (uno per file Markdown) | `src/content/projects/*.md` |
-| Colori, font, stili globali | `src/styles/global.css` |
-| Sezioni della home | `src/components/` |
+Il sito ha due modalità: il racconto per tutti e i **dettagli tecnici** (architettura, stack, scelte di codice), attivabili dalla barra in alto o aprendo direttamente [la versione tecnica](https://undevid.github.io/Portfolio/?view=tech).
 
-### Aggiungere un progetto
+## Contatti
 
-Crea `src/content/projects/nome-progetto.md`:
+[davide_valentino@outlook.it](mailto:davide_valentino@outlook.it) · [LinkedIn](https://www.linkedin.com/in/davide-valentino-984543109/)
 
-```md
----
-title: Nome progetto
-summary: Una frase che spiega il valore del progetto.
-platform: android        # android | flutter | web
-year: 2026
-client: Nome cliente     # default: "Progetto personale"
-role: Lead Android Developer
-stack: [Kotlin, Jetpack Compose]
-accent: '#3DDC84'        # colore del progetto (card + pagina dettaglio)
-monogram: FO             # opzionale, per la copertina generata
-cover: ./cover.png       # opzionale, immagine relativa al file .md
-featured: true           # card grande in evidenza
-order: 1                 # ordinamento
-highlights: [Punto chiave 1, Punto chiave 2]
-links:
-  - label: Google Play
-    href: https://play.google.com/store/apps/details?id=...
 ---
 
-## Il contesto
-Testo del case study in Markdown...
-```
-
-## Pubblicazione su GitHub Pages
-
-1. Crea il repository **`UNDevid.github.io`** (così il sito sarà su `https://undevid.github.io`).
-   Va bene anche un altro nome: il workflow calcola automaticamente il percorso base.
-2. Fai il push di questa cartella sul branch `main`.
-3. Su GitHub: **Settings → Pages → Source: GitHub Actions**.
-4. Ogni push su `main` pubblica il sito tramite `.github/workflows/deploy.yml`.
+<sub>Realizzato con Astro e Tailwind CSS, pubblicato su GitHub Pages a ogni push su `main`. Per lavorarci in locale: `npm install` e `npm run dev` (Node 26+).</sub>

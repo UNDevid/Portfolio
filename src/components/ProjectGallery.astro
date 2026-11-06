@@ -32,6 +32,7 @@ const { title, shots, variant = 'phone', heading = variant === 'art' ? 'Le opere
                 widths={[260, 520, 780].filter((w) => w <= s.src.width)}
                 sizes="(min-width: 640px) 260px, 220px"
                 quality={85}
+                data-inspect="StoreShot"
                 class="promo block w-[220px] rounded-2xl sm:w-[260px]"
               />
               <figcaption class="mt-4 text-center font-mono text-xs text-[var(--color-muted)]">{s.caption}</figcaption>
@@ -44,7 +45,7 @@ const { title, shots, variant = 'phone', heading = variant === 'art' ? 'Le opere
         {shots.map((s, i) => (
           <li class="shrink-0 snap-center" data-reveal style={`--d:${i * 90}ms`}>
             <figure>
-              <div class="frame w-[210px] rounded-[34px] p-[7px] sm:w-[240px]" data-tilt="6">
+              <div data-inspect="Screenshot" class="frame w-[210px] rounded-[34px] p-[7px] sm:w-[240px]" data-tilt="6">
                 <Image
                   src={s.src}
                   alt={`${title}: ${s.caption}`}
@@ -64,7 +65,7 @@ const { title, shots, variant = 'phone', heading = variant === 'art' ? 'Le opere
         {shots.map((s, i) => (
           <li data-reveal style={`--d:${(i % 4) * 80}ms`}>
             <figure class="group">
-              <div class="art overflow-hidden rounded-lg">
+              <div class="art overflow-hidden rounded-lg" data-inspect="Artwork">
                 <Image
                   src={s.src}
                   alt={s.label ? `${s.label}, ${s.caption}` : s.caption}
@@ -115,6 +116,6 @@ const { title, shots, variant = 'phone', heading = variant === 'art' ? 'Le opere
   }
   .gallery {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-line-strong) transparent;
+    scrollbar-color: var(--sb-thumb) transparent;
   }
 </style>

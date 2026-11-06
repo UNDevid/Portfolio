@@ -54,6 +54,95 @@ body {
   border-radius: 6px;
 }
 
+/* ── Scrollbar a tema ─────────────────────────────────────── */
+/* Standard (Chrome/Edge 121+, Firefox, Safari 26+): sottile, nel colore accento della pagina.
+   Mentre si scorre (classe .is-scrolling, vedi interactions.ts) il cursore si accende. */
+:root {
+  --sb-thumb: color-mix(in oklab, var(--accent) 38%, #2a313b);
+  --sb-track: var(--color-bg);
+}
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sb-thumb) var(--sb-track);
+}
+html.is-scrolling {
+  --sb-thumb: var(--accent);
+}
+/* Fallback per i Safari che non conoscono scrollbar-color */
+@supports not (scrollbar-color: red blue) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--sb-track);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb);
+    border-radius: 999px;
+    border: 3px solid var(--sb-track);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
+}
+
+/* ── Ispezione in modalità tecnica (vedi scripts/cursor.ts) ── */
+.inspect-box,
+.inspect-tag,
+.inspect-coords {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 80;
+  pointer-events: none;
+  will-change: transform;
+}
+.inspect-box,
+.inspect-tag,
+.inspect-coords {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+html[data-inspecting] .inspect-box,
+html[data-inspecting] .inspect-tag,
+html[data-inspecting] .inspect-coords {
+  opacity: 1;
+}
+.inspect-box {
+  border: 1px dashed color-mix(in oklab, var(--accent) 85%, transparent);
+  background: color-mix(in oklab, var(--accent) 5%, transparent);
+  border-radius: 6px;
+  transition:
+    opacity 0.15s,
+    transform 0.18s var(--ease-out),
+    width 0.18s var(--ease-out),
+    height 0.18s var(--ease-out);
+}
+.inspect-tag,
+.inspect-coords {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.inspect-tag {
+  padding: 5px 7px;
+  border-radius: 4px;
+  background: var(--accent);
+  color: var(--color-on-volt);
+  transition:
+    opacity 0.15s,
+    transform 0.18s var(--ease-out);
+}
+.inspect-coords {
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: #0b0f14e6;
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-muted);
+}
+
 /* ── Modalità di lettura ──────────────────────────────────── */
 /* Predefinita (anche senza JS): il racconto per tutti. "tech" aggiunge i dettagli tecnici. */
 html:not([data-view='tech']) .only-tech,

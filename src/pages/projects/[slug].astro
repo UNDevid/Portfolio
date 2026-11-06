@@ -107,6 +107,7 @@ const story = [
             story.map((s, i) => (
               <li
                 class="relative rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] p-7 sm:p-8"
+                data-inspect="StoryStep"
                 data-reveal
                 style={`--d:${i * 90}ms`}
               >
@@ -136,7 +137,7 @@ const story = [
         <Content />
       </div>
 
-      <aside class="space-y-8 lg:sticky lg:top-28 lg:self-start" data-reveal style="--d:120ms">
+      <aside data-inspect="Sidebar" class="space-y-8 lg:sticky lg:top-28 lg:self-start" data-reveal style="--d:120ms">
         {
           d.plain.highlights.length > 0 && (
             <div class="only-plain">
