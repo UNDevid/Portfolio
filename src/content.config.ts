@@ -32,6 +32,14 @@ const schema = ({ image }: SchemaContext) =>
       links: z
         .array(z.object({ label: z.string(), href: z.string() }))
         .default([]),
+      /** Recensioni scelte dallo store (nome abbreviato per privacy). */
+      reviews: z
+        .array(z.object({ author: z.string(), date: z.string(), stars: z.number().min(1).max(5), text: z.string() }))
+        .default([]),
+      /** Riga sotto il titolo delle recensioni, es. "5,0 ★ · oltre 200 recensioni su Google Play". */
+      reviewsSummary: z.string().optional(),
+      /** Nota sulle recensioni, es. "Tradotte dall'italiano". */
+      reviewsNote: z.string().optional(),
       featured: z.boolean().default(false),
       order: z.number().default(100),
       highlights: z.array(z.string()).default([]),

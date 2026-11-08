@@ -123,6 +123,7 @@ const it = {
     highlights: 'Highlights',
     next: 'Prossimo progetto →',
     gallery: { phone: 'Schermate', art: 'Le opere' },
+    reviews: { title: 'Cosa dicono i fan', aria: 'Recensioni degli utenti. Scorrono da sole: passa sopra o scorri per fermarle.', stars: (n: number) => `${n} stelle su 5`, locale: 'it-IT' },
   },
   beatrunner: { tagline1: 'La colonna sonora', tagline2: 'della tua corsa' },
 };
@@ -238,6 +239,7 @@ const en: Dict = {
     highlights: 'Highlights',
     next: 'Next project →',
     gallery: { phone: 'Screens', art: 'The artworks' },
+    reviews: { title: 'What the fans say', aria: 'User reviews. They scroll on their own: hover or scroll to stop them.', stars: (n: number) => `${n} out of 5 stars`, locale: 'en-GB' },
   },
   beatrunner: { tagline1: 'The soundtrack', tagline2: 'of your run' },
 };

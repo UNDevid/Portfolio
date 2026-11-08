@@ -4,6 +4,7 @@ import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ProjectCover from '../ProjectCover.astro';
 import ProjectGallery from '../ProjectGallery.astro';
+import ProjectReviews from '../ProjectReviews.astro';
 import { platforms } from '../../config';
 import { t, lpath, type Lang } from '../../i18n';
 import type { Project } from '../../projects';
@@ -199,6 +200,8 @@ const story = [
         }
       </aside>
     </div>
+
+    {d.reviews.length > 0 && <ProjectReviews lang={lang} reviews={d.reviews} summary={d.reviewsSummary} note={d.reviewsNote} />}
 
     {
       d.gallery.length > 0 && (

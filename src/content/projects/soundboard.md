@@ -39,6 +39,76 @@ plain:
     - Oltre 1.000 download
     - Gratuita e senza pubblicità
     - Aggiornata con costanza dal 2019
+reviews:
+  - author: "Shadi R."
+    date: '2020-06-09'
+    stars: 5
+    text: "Applicazione fantastica, un'esperienza sublime poter udire le parole del maestro in qualsiasi luogo. Non va però fatto abuso del verbo del maestro, consiglio 3 ascolti la mattina prima di uscire 2 dopo pranzo 5 dopo cena."
+  - author: "Utente Google"
+    date: '2021-04-29'
+    stars: 5
+    text: "Fondamentale. Impossibile rimanere senza. Il governo dovrebbe immediatamente ritirare Immuni e proporre questa app. Unica nota dolente: ora non ho più tempo per mia moglie, i miei figli, il lavoro, i miei hobby, ..."
+  - author: "Ivan F."
+    date: '2021-08-17'
+    stars: 5
+    text: "Applicazione essenziale per chiunque. Fortemente raccomandata per anziani, bambini e donne incinte."
+  - author: "Utente Google"
+    date: '2020-03-31'
+    stars: 5
+    text: "Metterei 16 stelle ma purtroppo l'app non mi ci sta nel telefono, è troppo pesante 😢 Esigo versione più leggera!!! Per ora metto solo 5 stelle..."
+  - author: "Utente Google"
+    date: '2020-03-31'
+    stars: 5
+    text: "Ho disinstallato tutte le altre app dal telefono. Mi sono sembrate inutili da quando ho installato questa."
+  - author: "Utente Google"
+    date: '2019-12-26'
+    stars: 4
+    text: "Non posso mettere 5 stelle perché quelle vanno solo al Maestro. A breve scriverò anche la recensione in lingue."
+  - author: "Sofia M."
+    date: '2020-06-05'
+    stars: 5
+    text: "Chi ha osato mettere 4 stelle? Solo perché c'è scritto Domenico Bini nel titolo merita il massimo!!!!!"
+  - author: "Utente Google"
+    date: '2019-12-20'
+    stars: 5
+    text: "5 stelle e non l'ho installata ancora"
+  - author: "Utente Google"
+    date: '2020-01-04'
+    stars: 5
+    text: "Stavo cercando delle app quando mi sono imbattuto in questa, senza guardare sono andato dalle recensioni critiche per vedere i problemi. Stranamente non c'erano e poi vidi il perchè... Ma certo è la soundboard di Domenico Bini!"
+  - author: "Utente Google"
+    date: '2019-11-10'
+    stars: 5
+    text: "Semplicemente incredibile, aspettavo questa app dal giorno in cui sono nato ❤️❤️❤️"
+  - author: "Utente Google"
+    date: '2020-01-27'
+    stars: 5
+    text: "Sto facendo dei mix di brani del Maestro, facendone partire uno dopo l'altro, bene, penso di star evocando il demonio"
+  - author: "Michele"
+    date: '2020-07-22'
+    stars: 5
+    text: "App molto utile è fatta bene. Contiene le opere più grandi nella storia della musica evi meta. Se si riesce ad aggiungere qualche altra opera del maestro potrei mettere 6 stelle."
+  - author: "Utente Google"
+    date: '2020-02-29'
+    stars: 5
+    text: "App indispensabile. Lode al maestro e gloria allo sviluppatore. [...] provvederò immediatamente a cestinare il mio Galaxy S10 se necessario."
+  - author: "Utente Google"
+    date: '2020-04-01'
+    stars: 5
+    text: "Credo proprio che smetterò di scrivere in chat, userò perennemente questi indispensabili audio del maestro per rispondere."
+  - author: "Nicolò G."
+    date: '2021-07-16'
+    stars: 5
+    text: "Raramente nella vita di un uomo capita di imbattersi in un'app meritevole di 5 stelle all'unanimità, ebbene si, quel momento è arrivato. Lode al maestro Domenico Bini"
+  - author: "Pasquale S."
+    date: '2021-02-09'
+    stars: 5
+    text: "App magnifica, consente di avere un po' di brani sempre a disposizione e impostarli come suoneria o sveglia. Inoltre con l'ultimo aggiornamento, il Maestro ci fa conoscere il colore della nostra regione. Gli sviluppatori sono dei piccoli Maestri."
+  - author: "Luca T."
+    date: '2021-09-25'
+    stars: 5
+    text: "Come ho potuto vivere senza fino ad oggi?"
+reviewsSummary: "5,0 ★ · oltre 200 recensioni su Google Play"
 ---
 
 ## L'idea
