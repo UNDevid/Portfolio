@@ -1,5 +1,11 @@
 ---
 import { site } from '../config';
+import { t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const d = t(Astro.props.lang);
 const year = new Date().getFullYear();
 ---
 
@@ -7,7 +13,7 @@ const year = new Date().getFullYear();
   <div
     class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 font-mono text-xs text-[var(--color-dim)] sm:flex-row sm:items-center sm:justify-between sm:px-8"
   >
-    <p>© {year} {site.name} · Progettato e sviluppato a mano con Astro</p>
+    <p>© {year} {site.name} · {d.footer.built}</p>
     <ul class="flex gap-5">
       {
         site.socials.map((s) => (

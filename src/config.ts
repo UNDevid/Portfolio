@@ -1,18 +1,9 @@
 // ─── Dati personali: modifica qui ───────────────────────────────────
+// I testi del sito, in italiano e in inglese, sono in src/i18n.ts.
 export const site = {
   handle: 'UNDevid',
   name: 'Davide Valentino',
   role: 'Senior Android Developer',
-  tagline:
-    'App Android native, Flutter cross-platform ed esperienze web che lasciano il segno.',
-  /** Il racconto per tutti (modalità predefinita) e la versione per sviluppatori. */
-  intro: {
-    plain:
-      "Progetto e realizzo app per Android e iPhone e siti web, dall'idea alla pubblicazione sugli store. Unisco solide competenze tecniche a una grande attenzione per il design.",
-    tech:
-      "App Android native, Flutter cross-platform ed esperienze web che lasciano il segno. Dal pixel all'architettura, ogni dettaglio è una scelta.",
-  },
-  location: 'Italia · Remote',
   email: 'davide_valentino@outlook.it',
   available: true,
   socials: [
@@ -25,13 +16,6 @@ export const stack = [
   'Kotlin', 'Jetpack Compose', 'Coroutines & Flow', 'Hilt', 'Room', 'Retrofit',
   'Clean Architecture', 'MVVM / MVI', 'Gradle KTS', 'Firebase', 'Flutter', 'Dart',
   'TypeScript', 'HTML / CSS', 'Material 3', 'CI/CD',
-];
-
-/** Cosa so fare, in parole semplici: la fascia scorrevole nella modalità per tutti. */
-export const skills = [
-  'App Android', 'App per iPhone con Flutter', 'Siti web', 'Design delle interfacce',
-  'Esperienza utente', 'Pubblicazione sugli store', 'Manutenzione nel tempo', 'Lavoro in autonomia',
-  'Dialogo con il cliente', 'Accessibilità', 'App veloci e affidabili', 'Italiano e inglese',
 ];
 
 export const platforms = {

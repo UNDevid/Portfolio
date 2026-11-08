@@ -2,7 +2,7 @@
 
 Senior Android Developer. Progetto e realizzo app Android, app Flutter e siti web, dall'idea alla pubblicazione sugli store.
 
-**→ [undevid.github.io/Portfolio](https://undevid.github.io/Portfolio/)**
+**→ [undevid.github.io/Portfolio](https://undevid.github.io/Portfolio/)** · [English version](https://undevid.github.io/Portfolio/en/)
 
 [![Anteprima del portfolio](.github/preview.jpg)](https://undevid.github.io/Portfolio/)
 

@@ -1,0 +1,29 @@
+---
+// Interruttore IT | EN: porta alla stessa pagina nell'altra lingua e ricorda la scelta.
+import { t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  /** La stessa pagina nell'altra lingua. */
+  alternate: string;
+}
+const { lang, alternate } = Astro.props;
+const d = t(lang);
+const other: Lang = lang === 'it' ? 'en' : 'it';
+---
+
+<div class="lang-switch flex items-center rounded-full border border-[var(--color-line-strong)] p-0.5 font-mono text-[11px]" role="group" aria-label={d.langSwitch.label}>
+  <span class="hidden rounded-full bg-[var(--accent)] px-2 py-1 font-semibold text-[var(--color-on-volt)] sm:inline" aria-current="true" title={d.langSwitch.current}>
+    {lang.toUpperCase()}
+  </span>
+  <a
+    href={alternate}
+    hreflang={other}
+    lang={other}
+    class="rounded-full px-2 py-1 text-[var(--color-muted)] transition-colors hover:text-white"
+    title={d.langSwitch.other}
+    data-set-lang={other}
+  >
+    {other.toUpperCase()}
+  </a>
+</div>

@@ -1,14 +1,16 @@
 ---
-import type { CollectionEntry } from 'astro:content';
 import ProjectCover from './ProjectCover.astro';
 import { platforms } from '../config';
-import { url } from '../utils';
+import { t, lpath, type Lang } from '../i18n';
+import type { Project } from '../projects';
 
 interface Props {
-  project: CollectionEntry<'projects'>;
+  project: Project;
   index: number;
+  lang: Lang;
 }
-const { project, index } = Astro.props;
+const { project, index, lang } = Astro.props;
+const d = t(lang);
 const { title, summary, platform, year, client, stack, accent, cover, monogram, featured } = project.data;
 const p = platforms[platform];
 ---
@@ -19,7 +21,7 @@ const p = platforms[platform];
   style={`view-transition-name: card-${project.id}`}
 >
   <a
-    href={url(`/projects/${project.id}/`)}
+    href={lpath(`/projects/${project.id}/`, lang)}
     class:list={[
       'group card relative flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] transition-[border-color,transform] duration-500',
       featured && 'lg:flex-row',
@@ -38,6 +40,7 @@ const p = platforms[platform];
       monogram={monogram}
       position={project.data.coverPosition}
       effect={project.data.coverEffect}
+      lang={lang}
       sizes={featured
         ? '(min-width: 1152px) 660px, (min-width: 1024px) 58vw, 100vw'
         : '(min-width: 1152px) 540px, (min-width: 768px) 50vw, 100vw'}
@@ -49,7 +52,7 @@ const p = platforms[platform];
     />
 
     <div class:list={['relative flex flex-1 flex-col gap-4 p-6 sm:p-7', featured && 'lg:p-10']}>
-      {featured && <span class="chip w-fit !text-[var(--c)]">★ In evidenza</span>}
+      {featured && <span class="chip w-fit !text-[var(--c)]">{d.projects.featured}</span>}
       <div class="flex items-center justify-between gap-3 font-mono text-[11px] text-[var(--color-dim)]">
         <span class="flex items-center gap-2">
           <span class="h-2 w-2 rounded-full" style={`background:${p.color}`}></span>

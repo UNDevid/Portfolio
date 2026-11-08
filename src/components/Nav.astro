@@ -1,33 +1,41 @@
 ---
 import { site } from '../config';
-import { url } from '../utils';
+import { t, lpath, type Lang } from '../i18n';
 import ViewToggle from './ViewToggle.astro';
+import LangSwitch from './LangSwitch.astro';
+
+interface Props {
+  lang: Lang;
+  alternate: string;
+}
+const { lang, alternate } = Astro.props;
+const d = t(lang);
 
 const links = [
-  { href: url('/#progetti'), label: 'Progetti' },
-  { href: url('/#approccio'), label: 'Approccio' },
-  { href: url('/#contatti'), label: 'Contatti' },
+  { href: lpath(`/#${d.anchors.projects}`, lang), label: d.nav.projects },
+  { href: lpath(`/#${d.anchors.approach}`, lang), label: d.nav.approach },
+  { href: lpath(`/#${d.anchors.contact}`, lang), label: d.nav.contact },
 ];
 ---
 
-<header
-  data-nav
-  class="group fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4"
-  transition:persist
->
+<header data-nav class="group fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4">
   <nav
     data-inspect="Nav"
-    class="glass flex w-full max-w-5xl items-center justify-between gap-4 rounded-full px-3 py-2 pl-5 transition-all duration-500 group-data-[scrolled]:max-w-4xl group-data-[scrolled]:shadow-[0_20px_60px_-20px_#000]"
-    aria-label="Principale"
+    class="glass flex w-full max-w-5xl items-center justify-between gap-2 rounded-full px-2 py-2 pl-4 sm:gap-3 sm:px-3 sm:pl-5 transition-all duration-500 group-data-[scrolled]:max-w-4xl group-data-[scrolled]:shadow-[0_20px_60px_-20px_#000]"
+    aria-label={d.nav.main}
   >
-    <a href={url('/')} class="flex shrink-0 items-center gap-2 font-display text-[15px] font-semibold tracking-tight" aria-label={`${site.name}, home`}>
+    <a
+      href={lpath('/', lang)}
+      class="flex shrink-0 items-center gap-2 font-display text-[15px] font-semibold tracking-tight"
+      aria-label={`${site.name}, ${d.nav.home}`}
+    >
       <span class="relative flex h-2.5 w-2.5">
         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--accent)] opacity-60"></span>
         <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-[var(--accent)]"></span>
       </span>
       <span class="whitespace-nowrap">{site.name}</span>
     </a>
-    <ul class="hidden items-center gap-1 sm:flex">
+    <ul class="hidden items-center gap-1 lg:flex">
       {
         links.map((l) => (
           <li>
@@ -42,14 +50,15 @@ const links = [
       }
     </ul>
     <div class="flex items-center gap-1 sm:gap-2">
-      <ViewToggle />
+      <LangSwitch lang={lang} alternate={alternate} />
+      <ViewToggle lang={lang} />
       <a
-        href={url('/#contatti')}
+        href={lpath(`/#${d.anchors.contact}`, lang)}
         class="btn btn-primary !px-3 !py-2 text-sm sm:!px-4"
-        aria-label="Parliamone: vai ai contatti"
+        aria-label={d.nav.ctaAria}
         data-magnetic
       >
-        <span class="hidden sm:inline">Parliamone</span>
+        <span class="hidden sm:inline">{d.nav.cta}</span>
         <svg class="h-4 w-4 sm:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="3" y="5" width="18" height="14" rx="2"></rect>
           <path d="m3 7 9 6 9-6"></path>

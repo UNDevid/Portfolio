@@ -1,0 +1,234 @@
+---
+// Pagina di un progetto, uguale in italiano e in inglese: cambiano solo i testi.
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProjectCover from '../ProjectCover.astro';
+import ProjectGallery from '../ProjectGallery.astro';
+import { platforms } from '../../config';
+import { t, lpath, type Lang } from '../../i18n';
+import type { Project } from '../../projects';
+
+interface Props {
+  project: Project;
+  next: Project;
+  lang: Lang;
+}
+
+const { project, next, lang } = Astro.props;
+const { Content } = await render(project);
+const d = project.data;
+const p = platforms[d.platform];
+const tr = t(lang);
+const other: Lang = lang === 'it' ? 'en' : 'it';
+
+const meta = [
+  { k: tr.project.meta.client, v: d.client },
+  { k: tr.project.meta.year, v: String(d.year) },
+  { k: tr.project.meta.platform, v: p.label },
+  ...(d.role ? [{ k: tr.project.meta.role, v: d.role }] : []),
+];
+
+const story = [
+  { label: tr.project.story.challenge, text: d.plain.challenge },
+  { label: tr.project.story.solution, text: d.plain.solution },
+  { label: tr.project.story.result, text: d.plain.result },
+];
+---
+
+<Base
+  lang={lang}
+  alternate={lpath(`/projects/${project.id}/`, other)}
+  title={`${d.title} — ${tr.meta.caseStudy}`}
+  description={d.plain.summary}
+  accent={d.accent}
+>
+  <article class="relative">
+    <div class="bg-grid pointer-events-none absolute inset-x-0 top-0 h-[600px]" aria-hidden="true"></div>
+
+    <header class="relative mx-auto max-w-6xl px-4 pt-32 sm:px-8 sm:pt-40">
+      <a href={lpath(`/#${tr.anchors.projects}`, lang)} class="eyebrow link-underline inline-flex items-center gap-2 hover:text-white" data-reveal>
+        {tr.project.back}
+      </a>
+      <p class="mt-10 flex items-center gap-2 font-mono text-xs" data-reveal style="--d:60ms">
+        <span class="h-2 w-2 rounded-full" style={`background:${p.color}`}></span>
+        <span style={`color:${p.color}`}>{p.label}</span>
+        <span class="text-[var(--color-dim)]">· {tr.meta.caseStudy}</span>
+        {
+          d.status && (
+            <span class="chip ml-2 !border-[color-mix(in_oklab,var(--accent)_45%,transparent)] !text-[var(--accent)]">
+              <span class="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+              {d.status}
+            </span>
+          )
+        }
+      </p>
+      <h1
+        class="display mt-5 max-w-4xl text-[clamp(2.8rem,8vw,6rem)] font-semibold"
+        transition:name={`title-${project.id}`}
+      >
+        {d.title}
+      </h1>
+      <p class="only-plain mt-6 max-w-2xl text-xl leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:120ms">
+        {d.plain.summary}
+      </p>
+      <p class="only-tech mt-6 max-w-2xl text-xl leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:120ms">
+        {d.summary}
+      </p>
+
+      <dl class="mt-12 grid grid-cols-2 gap-6 border-y border-[var(--color-line)] py-6 sm:grid-cols-4" data-reveal style="--d:180ms">
+        {
+          meta.map((m) => (
+            <div>
+              <dt class="eyebrow !text-[10px]">{m.k}</dt>
+              <dd class="mt-2 text-sm text-white">{m.v}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </header>
+
+    <div class="mx-auto mt-12 max-w-6xl px-4 sm:px-8">
+      <ProjectCover
+        title={d.title}
+        accent={d.accent}
+        platform={d.platform}
+        cover={d.cover}
+        monogram={d.monogram}
+        position={d.coverPosition}
+        effect={d.coverEffect}
+        lang={lang}
+        sizes="(min-width: 1152px) 1088px, calc(100vw - 32px)"
+        name={`cover-${project.id}`}
+        eager
+        class="aspect-[16/9] w-full rounded-3xl border border-[var(--color-line)] sm:aspect-[21/9]"
+      />
+    </div>
+
+    <div class="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-8 lg:grid-cols-[1fr_280px]">
+      <!-- Il racconto per tutti -->
+      <div class="only-plain max-w-2xl">
+        <h2 class="eyebrow mb-8" data-reveal><span class="text-[var(--accent)]">▸</span> {tr.project.inBrief}</h2>
+        <ol class="story space-y-4">
+          {
+            story.map((s, i) => (
+              <li
+                class="relative rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] p-7 sm:p-8"
+                data-inspect="StoryStep"
+                data-reveal
+                style={`--d:${i * 90}ms`}
+              >
+                <p class="font-mono text-xs text-[var(--accent)]">{String(i + 1).padStart(2, '0')} · {s.label}</p>
+                <p class="mt-3 text-lg leading-relaxed text-[#c9d1db]">{s.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+
+        <div
+          class="mt-10 flex flex-col gap-5 rounded-3xl border border-dashed border-[var(--color-line-strong)] p-7 sm:flex-row sm:items-center sm:justify-between"
+          data-reveal
+        >
+          <div>
+            <p class="display text-xl font-semibold">{tr.project.techCta.title}</p>
+            <p class="mt-1 text-sm text-[var(--color-muted)]">{tr.project.techCta.text}</p>
+          </div>
+          <button type="button" class="btn btn-ghost shrink-0 font-mono !text-sm" data-view-set="tech">
+            <span class="text-[var(--accent)]" aria-hidden="true">&lt;/&gt;</span> {tr.project.techCta.button}
+          </button>
+        </div>
+      </div>
+
+      <!-- I dettagli tecnici -->
+      <div class="only-tech prose-case max-w-2xl" data-reveal>
+        <Content />
+      </div>
+
+      <aside data-inspect="Sidebar" class="space-y-8 lg:sticky lg:top-28 lg:self-start" data-reveal style="--d:120ms">
+        {
+          d.plain.highlights.length > 0 && (
+            <div class="only-plain">
+              <h2 class="eyebrow mb-4">{tr.project.keyPoints}</h2>
+              <ul class="space-y-3 text-sm text-[var(--color-muted)]">
+                {d.plain.highlights.map((h) => (
+                  <li class="flex gap-3">
+                    <span class="text-[var(--accent)]">✦</span>
+                    {h}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+        <div class="only-tech">
+          <h2 class="eyebrow mb-4">{tr.project.stack}</h2>
+          <ul class="flex flex-wrap gap-1.5">
+            {d.stack.map((s) => <li class="chip">{s}</li>)}
+          </ul>
+        </div>
+        {
+          d.highlights.length > 0 && (
+            <div class="only-tech">
+              <h2 class="eyebrow mb-4">{tr.project.highlights}</h2>
+              <ul class="space-y-3 text-sm text-[var(--color-muted)]">
+                {d.highlights.map((h) => (
+                  <li class="flex gap-3">
+                    <span class="text-[var(--accent)]">✦</span>
+                    {h}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+        {
+          d.links.length > 0 && (
+            <div class="flex flex-col gap-2">
+              {d.links.map((l, i) => (
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener"
+                  class:list={['btn justify-between', i === 0 ? 'btn-primary' : 'btn-ghost']}
+                  data-magnetic
+                >
+                  {l.label} <span aria-hidden="true">↗</span>
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </aside>
+    </div>
+
+    {
+      d.gallery.length > 0 && (
+        <ProjectGallery title={d.title} shots={d.gallery} variant={d.galleryStyle} heading={d.galleryTitle} lang={lang} />
+      )
+    }
+
+    {
+      next.id !== project.id && (
+        <a
+          href={lpath(`/projects/${next.id}/`, lang)}
+          class="group relative block border-t border-[var(--color-line)]"
+          style={`--c:${next.data.accent}`}
+        >
+          <div class="mx-auto flex max-w-6xl items-end justify-between gap-6 px-4 py-16 sm:px-8 sm:py-24">
+            <div>
+              <p class="eyebrow mb-4">{tr.project.next}</p>
+              <p class="display text-[clamp(2.2rem,6vw,4.5rem)] font-semibold transition-colors duration-500 group-hover:text-[var(--c)]">
+                {next.data.title}
+              </p>
+            </div>
+            <span
+              class="hidden h-16 w-16 shrink-0 place-items-center rounded-full border border-[var(--color-line-strong)] text-2xl transition-all duration-500 group-hover:rotate-[-45deg] group-hover:border-[var(--c)] group-hover:bg-[var(--c)] group-hover:text-black sm:grid"
+              aria-hidden="true"
+            >
+              →
+            </span>
+          </div>
+        </a>
+      )
+    }
+  </article>
+</Base>

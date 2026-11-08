@@ -1,5 +1,11 @@
 ---
 // Mockup di un telefono con una finta UI in stile Material 3 / Compose, animata in CSS.
+import { t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const d = t(Astro.props.lang);
 ---
 
 <div class="phone-scene relative mx-auto w-full max-w-[420px]" aria-hidden="true" data-inspect="PhoneMockup">
@@ -37,8 +43,8 @@
       </div>
       <!-- app bar -->
       <div class="px-5 pt-5">
-        <p class="text-[10px] text-white/50">Bentornato 👋</p>
-        <p class="font-[var(--font-display)] text-lg font-semibold text-white">I miei progetti</p>
+        <p class="text-[10px] text-white/50">{d.phone.welcome}</p>
+        <p class="font-[var(--font-display)] text-lg font-semibold text-white">{d.phone.title}</p>
       </div>
       <!-- chips -->
       <div class="flex gap-1.5 px-5 pt-3">

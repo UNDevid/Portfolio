@@ -1,74 +1,25 @@
 ---
-// Ogni pilastro ha il racconto per tutti (plain) e la versione tecnica (tech).
-const pillars = [
-  {
-    n: '01',
-    plain: {
-      title: "Dall'idea allo store",
-      text: "Seguo il progetto dall'inizio alla fine: ascolto le esigenze, disegno l'esperienza, sviluppo l'app e la pubblico. Un solo interlocutore, nessun passaggio di mano.",
-      tag: 'Autonomia · Comunicazione',
-    },
-    tech: {
-      title: 'Architettura solida',
-      text: 'Clean Architecture, moduli separati e flussi di dati unidirezionali. Codice testabile, che regge la crescita del prodotto.',
-      tag: 'MVVM · MVI · DI',
-    },
-  },
-  {
-    n: '02',
-    plain: {
-      title: 'Cura per il design',
-      text: 'Interfacce belle e intuitive, con animazioni che aiutano a capire invece di distrarre. Le persone devono sapere cosa fare senza pensarci.',
-      tag: 'Esperienza utente · Interfacce',
-    },
-    tech: {
-      title: 'UI curata al pixel',
-      text: 'Interfacce in Jetpack Compose e Flutter fedeli al design, con motion design significativo e Material 3 usato con criterio.',
-      tag: 'Compose · Motion',
-    },
-  },
-  {
-    n: '03',
-    plain: {
-      title: 'App veloci e affidabili',
-      text: 'Si aprono in un attimo, non si bloccano e funzionano anche quando la connessione è debole. La qualità si misura, non si promette.',
-      tag: 'Qualità · Stabilità',
-    },
-    tech: {
-      title: 'Performance reali',
-      text: 'Avvio rapido, liste fluide a 120Hz, consumi sotto controllo. Misuro con profiler e baseline profile, non a sensazione.',
-      tag: 'Profiling · R8',
-    },
-  },
-  {
-    n: '04',
-    plain: {
-      title: 'Pensate per tutti',
-      text: "Testi leggibili, colori a contrasto e piena compatibilità con le funzioni di accessibilità del telefono. Un'app accessibile è un'app fatta meglio.",
-      tag: 'Accessibilità · Più lingue',
-    },
-    tech: {
-      title: 'Accessibile a tutti',
-      text: "Contrasto, TalkBack, dimensioni del testo dinamiche. Un'app accessibile è semplicemente un'app fatta meglio.",
-      tag: 'a11y · i18n',
-    },
-  },
-];
+// I testi (racconto per tutti e versione tecnica) sono nel dizionario: src/i18n.ts → approach.
+import { t, type Lang } from '../i18n';
 
-const steps = ['Ascolto', 'Prototipo', 'Sviluppo', 'Rilascio', 'Evoluzione'];
+interface Props {
+  lang: Lang;
+}
+const d = t(Astro.props.lang);
+const pillars = d.approach.pillars.map((p, i) => ({ ...p, n: String(i + 1).padStart(2, '0') }));
+const steps = d.approach.steps;
 ---
 
-<section id="approccio" class="relative scroll-mt-24 border-t border-[var(--color-line)] bg-[var(--color-bg-2)]/50">
+<section id={d.anchors.approach} class="relative scroll-mt-24 border-t border-[var(--color-line)] bg-[var(--color-bg-2)]/50">
   <div class="mx-auto max-w-6xl px-4 py-24 sm:px-8 sm:py-32">
     <div class="grid gap-12 lg:grid-cols-[1fr_1.4fr]">
       <div class="lg:sticky lg:top-32 lg:self-start">
-        <p class="eyebrow mb-4" data-reveal><span class="text-[var(--accent)]">02</span> / Approccio</p>
+        <p class="eyebrow mb-4" data-reveal><span class="text-[var(--accent)]">02</span> / {d.approach.eyebrow}</p>
         <h2 class="display text-[clamp(2.2rem,5vw,3.6rem)] font-semibold" data-reveal style="--d:80ms">
-          Sviluppo con<br />occhio da designer.
+          {d.approach.title1}<br />{d.approach.title2}
         </h2>
         <p class="mt-6 max-w-md leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:160ms">
-          Lavoro in autonomia end-to-end: dall'analisi con il cliente fino alla pubblicazione sugli store.
-          Codice e design sono la stessa conversazione.
+          {d.approach.text}
         </p>
         <ol class="mt-10 flex flex-wrap items-center gap-2 font-mono text-xs text-[var(--color-muted)]" data-reveal style="--d:240ms">
           {

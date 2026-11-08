@@ -1,6 +1,6 @@
 ---
 title: Agricola Cavagliato
-summary: Il sito di un'azienda agricola che coltiva il Peperone di Carmagnola dal 1926. Varietà, ricette, storia di famiglia e contatti, curati come una vetrina del territorio.
+summary: Il sito di un'azienda agricola che coltiva il Peperone di Carmagnola dal 1926. Varietà, ricette, storia di famiglia e contatti, curati come una vetrina del territorio. Da quando è online le vendite ai privati sono cresciute molto, anche dall'estero.
 platform: web
 year: 2025
 client: Azienda agricola Cavagliato
@@ -12,6 +12,7 @@ cover: ../../assets/projects/carmagnola/cover.jpg
 coverEffect: ken-burns
 order: 5
 highlights:
+  - Vendite ai privati in forte crescita, anche dall'estero
   - Unici produttori del Corno di Carmagnola Presidio Slow Food
   - Schede di 8 varietà e 8 ricette
   - Modulo contatti in PHP e mappa interattiva
@@ -33,8 +34,10 @@ plain:
   tags: [Sito web, Agroalimentare, Online]
   challenge: Un'azienda con quasi un secolo di storia e un prodotto Presidio Slow Food aveva bisogno di una vetrina online all'altezza.
   solution: Un sito caldo e facile da usare anche da telefono. Racconta la famiglia, presenta le 8 varietà coltivate e propone ricette per gustarle.
-  result: Una presenza online curata che valorizza il prodotto e il territorio, e permette ai clienti di contattare l'azienda con un tocco.
+  result: "Il sito ha portato risultati concreti: le vendite ai privati sono aumentate molto, con ordini arrivati anche dall'estero. Oggi è la vetrina dell'azienda e permette ai clienti di contattarla con un tocco."
   highlights:
+    - Vendite ai privati in forte crescita
+    - Nuovi clienti anche dall'estero
     - Realizzato per un cliente
     - Ottimizzato per smartphone
     - 8 varietà e 8 ricette
@@ -62,3 +65,7 @@ Un sito multipagina con un'identità calda e riconoscibile: il rosso del peperon
 - Pensato prima di tutto per lo smartphone, con un pulsante "Contattaci" sempre a portata di pollice.
 - Animazioni leggere all'apparire delle sezioni e navbar che resta fissa durante lo scroll.
 - Stack semplice e leggero, facile da mantenere nel tempo per un cliente che vuole un sito che funzioni e basta.
+
+## Il risultato
+
+Il sito ha fatto il suo lavoro: da quando è online **le vendite ai privati sono cresciute molto**, e sono arrivati ordini **anche dall'estero**. Il Corno di Carmagnola ora raggiunge persone che prima non avrebbero mai saputo dell'azienda, e il pulsante "Contattaci" sempre visibile accorcia la strada tra la curiosità e l'ordine.

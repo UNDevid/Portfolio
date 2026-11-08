@@ -1,26 +1,33 @@
 ---
 import { site } from '../config';
+import { t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const d = t(Astro.props.lang);
 ---
 
-<section id="contatti" class="relative scroll-mt-24 overflow-hidden">
+<section id={d.anchors.contact} class="relative scroll-mt-24 overflow-hidden">
   <div class="bg-grid pointer-events-none absolute inset-0 rotate-180" aria-hidden="true"></div>
   <div class="relative mx-auto max-w-6xl px-4 py-28 text-center sm:px-8 sm:py-40">
-    <p class="eyebrow mb-6" data-reveal><span class="text-[var(--accent)]">03</span> / Contatti</p>
+    <p class="eyebrow mb-6" data-reveal><span class="text-[var(--accent)]">03</span> / {d.contact.eyebrow}</p>
     <h2 class="display mx-auto max-w-4xl text-[clamp(2.6rem,8vw,6rem)] font-semibold" data-reveal style="--d:80ms">
-      Hai un'idea?<br /><span class="text-gradient">Rendiamola un'app.</span>
+      {d.contact.title1}<br /><span class="text-gradient">{d.contact.title2}</span>
     </h2>
     <p class="mx-auto mt-8 max-w-lg text-lg text-[var(--color-muted)]" data-reveal style="--d:160ms">
-      Raccontami il tuo progetto: ti rispondo al più presto.
+      {d.contact.text}
     </p>
 
     <div class="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row" data-reveal style="--d:240ms">
       <a href={`mailto:${site.email}`} class="btn btn-primary !px-7 !py-4 text-base" data-magnetic>
-        Scrivimi una email <span aria-hidden="true">→</span>
+        {d.contact.email} <span aria-hidden="true">→</span>
       </a>
       <button
         type="button"
         class="btn btn-ghost !py-4 font-mono !text-sm"
         data-copy={site.email}
+        data-copied={d.contact.copied}
         aria-live="polite"
       >
         <span data-copy-label>{site.email}</span>
@@ -39,7 +46,7 @@ import { site } from '../config';
         ))
       }
     </ul>
-    <p class="mt-6 font-mono text-xs text-[var(--color-dim)]">{site.location}</p>
+    <p class="mt-6 font-mono text-xs text-[var(--color-dim)]">{d.contact.location}</p>
   </div>
 </section>
 
@@ -52,7 +59,7 @@ import { site } from '../config';
           await navigator.clipboard.writeText(btn.dataset.copy!);
           if (label) {
             const prev = label.textContent;
-            label.textContent = 'Copiata ✓';
+            label.textContent = btn.dataset.copied ?? '✓';
             setTimeout(() => (label.textContent = prev), 1600);
           }
         } catch {

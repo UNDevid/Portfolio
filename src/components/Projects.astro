@@ -1,15 +1,18 @@
 ---
-import type { CollectionEntry } from 'astro:content';
 import ProjectCard from './ProjectCard.astro';
 import { platforms, type Platform } from '../config';
+import { t, type Lang } from '../i18n';
+import type { Project } from '../projects';
 
 interface Props {
-  projects: CollectionEntry<'projects'>[];
+  projects: Project[];
+  lang: Lang;
 }
-const { projects } = Astro.props;
+const { projects, lang } = Astro.props;
+const d = t(lang);
 const used = [...new Set(projects.map((p) => p.data.platform))] as Platform[];
 const filters = [
-  { id: 'all', label: 'Tutti', count: projects.length },
+  { id: 'all', label: d.projects.all, count: projects.length },
   ...used.map((id) => ({
     id,
     label: platforms[id].label,
@@ -18,15 +21,15 @@ const filters = [
 ];
 ---
 
-<section id="progetti" class="relative mx-auto max-w-6xl scroll-mt-24 px-4 py-24 sm:px-8 sm:py-32">
+<section id={d.anchors.projects} class="relative mx-auto max-w-6xl scroll-mt-24 px-4 py-24 sm:px-8 sm:py-32">
   <div class="mb-12 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
     <div>
-      <p class="eyebrow mb-4" data-reveal><span class="text-[var(--accent)]">01</span> / Lavori selezionati</p>
+      <p class="eyebrow mb-4" data-reveal><span class="text-[var(--accent)]">01</span> / {d.projects.eyebrow}</p>
       <h2 class="display text-[clamp(2.2rem,5vw,3.8rem)] font-semibold" data-reveal style="--d:80ms">
-        Progetti realizzati<br /><span class="text-[var(--color-dim)]">dall'idea allo store.</span>
+        {d.projects.title1}<br /><span class="text-[var(--color-dim)]">{d.projects.title2}</span>
       </h2>
     </div>
-    <div class="flex flex-wrap gap-2" role="group" aria-label="Filtra per piattaforma" data-reveal style="--d:160ms">
+    <div class="flex flex-wrap gap-2" role="group" aria-label={d.projects.filterAria} data-reveal style="--d:160ms">
       {
         filters.map((f, i) => (
           <button
@@ -44,7 +47,7 @@ const filters = [
   </div>
 
   <ul class="grid gap-5 md:grid-cols-2">
-    {projects.map((project, i) => <ProjectCard project={project} index={i} />)}
+    {projects.map((project, i) => <ProjectCard project={project} index={i} lang={lang} />)}
   </ul>
 </section>
 

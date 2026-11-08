@@ -1,12 +1,14 @@
 ---
 import PhoneMockup from './PhoneMockup.astro';
 import { site } from '../config';
-import { url } from '../utils';
+import { t, lpath, type Lang } from '../i18n';
 
 interface Props {
   projectCount: number;
+  lang: Lang;
 }
-const { projectCount } = Astro.props;
+const { projectCount, lang } = Astro.props;
+const d = t(lang);
 ---
 
 <section class="relative overflow-hidden pt-32 pb-20 sm:pt-40 lg:pb-32">
@@ -17,7 +19,7 @@ const { projectCount } = Astro.props;
         site.available && (
           <p class="chip mb-8 !border-[color-mix(in_oklab,var(--accent)_40%,transparent)] !text-[var(--accent)]" data-reveal>
             <span class="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
-            Disponibile per nuovi progetti
+            {d.hero.available}
           </p>
         )
       }
@@ -25,41 +27,41 @@ const { projectCount } = Astro.props;
         <span class="text-[var(--accent)]">&gt;</span> <span data-scramble={site.role}>{site.role}</span>
       </p>
       <h1 class="display text-[clamp(2.7rem,6.2vw,5rem)] font-semibold" data-reveal style="--d:140ms">
-        Creo app che<br />
-        <span class="text-gradient">si sentono native.</span>
+        {d.hero.line1}<br />
+        <span class="text-gradient">{d.hero.line2}</span>
       </h1>
       <p class="only-plain mt-8 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:220ms">
-        {site.intro.plain}
+        {d.hero.intro.plain}
       </p>
       <p class="only-tech mt-8 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]" data-reveal style="--d:220ms">
-        {site.intro.tech}
+        {d.hero.intro.tech}
       </p>
       <div class="mt-10 flex flex-wrap gap-3" data-reveal style="--d:300ms">
-        <a href={url('/#progetti')} class="btn btn-primary" data-magnetic>
-          Guarda i progetti
+        <a href={lpath(`/#${d.anchors.projects}`, lang)} class="btn btn-primary" data-magnetic>
+          {d.hero.seeProjects}
           <span aria-hidden="true">→</span>
         </a>
-        <a href={url('/#contatti')} class="btn btn-ghost" data-magnetic>Contattami</a>
+        <a href={lpath(`/#${d.anchors.contact}`, lang)} class="btn btn-ghost" data-magnetic>{d.hero.contactMe}</a>
       </div>
 
       <dl class="mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-[var(--color-line)] pt-8" data-reveal style="--d:380ms">
         <div>
-          <dt class="eyebrow !text-[10px]">Progetti</dt>
+          <dt class="eyebrow !text-[10px]">{d.hero.stats.projects}</dt>
           <dd class="display mt-2 text-3xl font-semibold">{String(projectCount).padStart(2, '0')}</dd>
         </div>
         <div>
-          <dt class="eyebrow !text-[10px]">Piattaforme</dt>
+          <dt class="eyebrow !text-[10px]">{d.hero.stats.platforms}</dt>
           <dd class="display mt-2 text-3xl font-semibold">03</dd>
         </div>
         <div>
-          <dt class="eyebrow !text-[10px]">In autonomia</dt>
+          <dt class="eyebrow !text-[10px]">{d.hero.stats.solo}</dt>
           <dd class="display mt-2 text-3xl font-semibold">100<span class="text-[var(--accent)]">%</span></dd>
         </div>
       </dl>
     </div>
 
     <div data-reveal style="--d:200ms">
-      <PhoneMockup />
+      <PhoneMockup lang={lang} />
     </div>
   </div>
 </section>

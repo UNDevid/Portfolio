@@ -49,6 +49,16 @@ document.addEventListener('astro:before-swap', (e) => {
 });
 
 document.addEventListener('click', (e) => {
+  // L'interruttore IT | EN ricorda la lingua scelta (la legge lo script inline nel <head>).
+  const langLink = (e.target as HTMLElement).closest<HTMLElement>('[data-set-lang]');
+  if (langLink) {
+    try {
+      localStorage.setItem('portfolio-lang', langLink.dataset.setLang!);
+    } catch {
+      /* archiviazione non disponibile */
+    }
+    return;
+  }
   const t = (e.target as HTMLElement).closest<HTMLElement>('[data-view-toggle],[data-view-set]');
   if (!t) return;
   const next = (t.dataset.viewSet as View | undefined) ?? (currentView() === 'tech' ? 'plain' : 'tech');

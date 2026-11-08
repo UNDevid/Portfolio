@@ -1,21 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
-import Base from '../layouts/Base.astro';
-import Hero from '../components/Hero.astro';
-import StackMarquee from '../components/StackMarquee.astro';
-import Projects from '../components/Projects.astro';
-import Approach from '../components/Approach.astro';
-import Contact from '../components/Contact.astro';
-
-const projects = (await getCollection('projects')).sort(
-  (a, b) => a.data.order - b.data.order || b.data.year - a.data.year,
-);
+import HomePage from '../components/pages/HomePage.astro';
 ---
 
-<Base>
-  <Hero projectCount={projects.length} />
-  <StackMarquee />
-  <Projects projects={projects} />
-  <Approach />
-  <Contact />
-</Base>
+<HomePage lang="it" />

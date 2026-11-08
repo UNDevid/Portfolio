@@ -3,6 +3,7 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import type { Platform } from '../config';
+import { t, type Lang } from '../i18n';
 import BeatRunnerNeon from './effects/BeatRunnerNeon.astro';
 import HailFall from './effects/HailFall.astro';
 import AthanorBreath from './effects/AthanorBreath.astro';
@@ -19,6 +20,7 @@ interface Props {
   monogram?: string;
   position?: 'left' | 'center' | 'right';
   effect?: CoverEffect;
+  lang?: Lang;
   /** Larghezza mostrata, per scegliere la risoluzione giusta dal srcset. */
   sizes?: string;
   name?: string;
@@ -33,6 +35,7 @@ const {
   monogram,
   position = 'center',
   effect,
+  lang = 'it',
   sizes = '(min-width: 1152px) 540px, (min-width: 768px) 50vw, 100vw',
   name,
   class: cls = '',
@@ -57,7 +60,7 @@ const initials =
     cover ? (
       <Image
         src={cover}
-        alt={`Anteprima di ${title}`}
+        alt={t(lang).projects.coverAlt(title)}
         class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
         style={`object-position: ${position} center`}
         loading={eager ? 'eager' : 'lazy'}
@@ -76,7 +79,7 @@ const initials =
       </div>
     )
   }
-  {effect === 'beatrunner-neon' && <BeatRunnerNeon />}
+  {effect === 'beatrunner-neon' && <BeatRunnerNeon lang={lang} />}
   {effect === 'hail' && <HailFall />}
   {effect === 'athanor-breath' && <AthanorBreath />}
   {effect === 'ken-burns' && <KenBurns />}

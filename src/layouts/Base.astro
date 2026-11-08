@@ -5,23 +5,29 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../config';
 import { url } from '../utils';
+import { t, type Lang } from '../i18n';
 
 interface Props {
+  lang: Lang;
+  /** La stessa pagina nell'altra lingua (percorso con il base). Assente per la 404. */
+  alternate?: string;
   title?: string;
   description?: string;
   accent?: string;
 }
 
-const {
-  title = `${site.name} — ${site.role}`,
-  description = site.tagline,
-  accent,
-} = Astro.props;
+const { lang, alternate, accent } = Astro.props;
+const d = t(lang);
+const title = Astro.props.title ?? `${site.name} — ${site.role}`;
+const description = Astro.props.description ?? d.hero.intro.plain;
+const other: Lang = lang === 'it' ? 'en' : 'it';
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const alternateUrl = alternate ? new URL(alternate, Astro.site) : undefined;
+const itUrl = lang === 'it' || !alternateUrl ? canonical : alternateUrl;
 ---
 
 <!doctype html>
-<html lang="it" style={accent ? `--accent:${accent}` : undefined}>
+<html lang={d.meta.htmlLang} data-alt={alternate} style={accent ? `--accent:${accent}` : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -29,8 +35,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <meta name="theme-color" content="#07090d" />
     <link rel="canonical" href={canonical} />
+    {
+      alternateUrl && (
+        <>
+          <link rel="alternate" hreflang={lang} href={canonical} />
+          <link rel="alternate" hreflang={other} href={alternateUrl} />
+          <link rel="alternate" hreflang="x-default" href={itUrl} />
+        </>
+      )
+    }
     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={d.meta.ogLocale} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -39,13 +55,34 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       (function () {
         var d = document.documentElement;
         d.classList.add('js');
+        var q = new URLSearchParams(location.search);
+        try {
+          // Lingua: ?lang=it|en nel link, poi la scelta fatta con l'interruttore, poi la lingua del browser.
+          // Solo al primo caricamento (non nei cambi di pagina interni); i motori di ricerca restano dove sono.
+          if (window.__langChecked) throw 0;
+          window.__langChecked = true;
+          var lang = d.lang;
+          var alt = d.getAttribute('data-alt');
+          var pref = q.get('lang');
+          if (pref === 'it' || pref === 'en') localStorage.setItem('portfolio-lang', pref);
+          else pref = localStorage.getItem('portfolio-lang');
+          if (!pref) {
+            var list = navigator.languages || [navigator.language || ''];
+            pref = list.some(function (l) { return /^it\b/i.test(l); }) ? 'it' : 'en';
+          }
+          var bot = /bot|crawl|spider|slurp|google|bing|duckduck|baidu|yandex/i.test(navigator.userAgent);
+          if (pref !== lang && alt && !bot) {
+            location.replace(alt + location.hash);
+            return;
+          }
+        } catch (e) {}
         // Modalità di lettura: ?view=tech|plain nel link, altrimenti l'ultima scelta, altrimenti "plain".
         var v = null;
         try {
-          var q = new URLSearchParams(location.search).get('view');
-          if (q === 'tech' || q === 'plain') {
-            v = q;
-            localStorage.setItem('portfolio-view', q);
+          var qv = q.get('view');
+          if (qv === 'tech' || qv === 'plain') {
+            v = qv;
+            localStorage.setItem('portfolio-view', qv);
           } else {
             v = localStorage.getItem('portfolio-view');
           }
@@ -59,7 +96,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] btn btn-primary"
-      >Vai al contenuto</a
+      >{d.meta.skip}</a
     >
     <div class="spotlight" aria-hidden="true"></div>
     <div
@@ -70,11 +107,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       transition:persist
     >
     </div>
-    <Nav />
+    <Nav lang={lang} alternate={alternate ?? url(lang === 'it' ? '/en/' : '/')} />
     <main id="main" class="relative z-10">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
     <script>
       import '../scripts/interactions.ts';
       import '../scripts/view.ts';

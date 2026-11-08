@@ -2,6 +2,12 @@
 // Il logo di Beat Runner che si accende come un'insegna al neon, come nello splash dell'app:
 // due sfarfallii, il bagliore che sale, poi una luce che attraversa le lettere e il bagliore che "respira".
 import logo from '../../assets/brand/beatrunner-logo.svg?raw';
+import { t, type Lang } from '../../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+const d = t(Astro.props.lang ?? 'it');
 
 const mask = `url("data:image/svg+xml;utf8,${encodeURIComponent(logo)}")`;
 ---
@@ -14,7 +20,7 @@ const mask = `url("data:image/svg+xml;utf8,${encodeURIComponent(logo)}")`;
       <span class="layer letters"></span>
       <span class="layer sweep"></span>
     </div>
-    <p class="tagline">La colonna sonora <em>della tua corsa</em></p>
+    <p class="tagline">{d.beatrunner.tagline1} <em>{d.beatrunner.tagline2}</em></p>
   </div>
 </div>
 

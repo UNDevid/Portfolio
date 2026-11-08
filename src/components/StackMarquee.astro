@@ -1,24 +1,30 @@
 ---
-import { stack, skills } from '../config';
+import { stack } from '../config';
+import { t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const d = t(Astro.props.lang);
 
 const tracks = [
-  { cls: 'only-plain', label: 'Competenze', items: skills },
-  { cls: 'only-tech', label: 'Tecnologie', items: stack },
+  { cls: 'only-plain', label: d.marquee.skillsLabel, items: d.marquee.skills },
+  { cls: 'only-tech', label: d.marquee.stackLabel, items: stack },
 ];
 ---
 
 {
-  tracks.map((t) => (
+  tracks.map((tr) => (
     <section
-      class:list={[t.cls, 'relative border-y border-[var(--color-line)] bg-[var(--color-bg-2)]/60 py-6']}
-      aria-label={t.label}
+      class:list={[tr.cls, 'relative border-y border-[var(--color-line)] bg-[var(--color-bg-2)]/60 py-6']}
+      aria-label={tr.label}
     >
       <div class="marquee overflow-hidden">
         <ul class="marquee-track">
-          {[...t.items, ...t.items].map((item, i) => (
+          {[...tr.items, ...tr.items].map((item, i) => (
             <li
               class="flex items-center gap-10 pr-10 font-mono text-sm text-[var(--color-muted)]"
-              aria-hidden={i >= t.items.length ? 'true' : undefined}
+              aria-hidden={i >= tr.items.length ? 'true' : undefined}
             >
               <span class="whitespace-nowrap transition-colors hover:text-white">{item}</span>
               <span class="text-[var(--accent)] opacity-60">✦</span>

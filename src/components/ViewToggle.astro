@@ -1,19 +1,25 @@
 ---
 // Interruttore "Dettagli tecnici": aggiunge al racconto per tutti le parti tecniche
 // (architettura, stack, scelte di codice). L'etichetta descrive il contenuto, non chi legge.
+import { t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const d = t(Astro.props.lang);
 ---
 
 <button
   type="button"
-  class="view-toggle group/vt flex items-center gap-2.5 rounded-full py-1.5 pr-1.5 pl-3 text-sm text-[var(--color-muted)] transition-colors hover:bg-white/5 hover:text-white"
+  class="view-toggle group/vt flex items-center gap-2 rounded-full py-1.5 pr-1 pl-2 sm:gap-2.5 sm:pr-1.5 sm:pl-3 text-sm text-[var(--color-muted)] transition-colors hover:bg-white/5 hover:text-white"
   data-view-toggle
   role="switch"
   aria-checked="false"
-  title="Mostra i dettagli tecnici: architettura, stack e scelte di codice"
+  title={d.view.title}
 >
   <span class="font-mono text-xs text-[var(--accent)]" aria-hidden="true">&lt;/&gt;</span>
-  <span class="hidden whitespace-nowrap md:inline">Dettagli tecnici</span>
-  <span class="sr-only md:hidden">Dettagli tecnici</span>
+  <span class="hidden whitespace-nowrap xl:inline">{d.view.toggle}</span>
+  <span class="sr-only xl:hidden">{d.view.toggle}</span>
   <span class="track relative h-5 w-9 rounded-full border border-[var(--color-line-strong)] bg-white/5 transition-colors" aria-hidden="true">
     <span class="thumb absolute top-[2px] left-[2px] h-3.5 w-3.5 rounded-full bg-[var(--color-muted)] transition-transform duration-300"></span>
   </span>

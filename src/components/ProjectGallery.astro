@@ -5,14 +5,17 @@
 // - promo: immagini dello store già impaginate (cornice inclusa), mostrate così come sono
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import { t, type Lang } from '../i18n';
 
 interface Props {
   title: string;
   shots: { src: ImageMetadata; caption: string; label?: string }[];
   variant?: 'phone' | 'art' | 'promo';
   heading?: string;
+  lang?: Lang;
 }
-const { title, shots, variant = 'phone', heading = variant === 'art' ? 'Le opere' : 'Schermate' } = Astro.props;
+const { title, shots, variant = 'phone', lang = 'it' } = Astro.props;
+const heading = Astro.props.heading ?? t(lang).project.gallery[variant === 'art' ? 'art' : 'phone'];
 ---
 
 <section class="relative overflow-hidden border-y border-[var(--color-line)] bg-[var(--color-bg-2)]/60 py-16" aria-label={`${heading}: ${title}`}>

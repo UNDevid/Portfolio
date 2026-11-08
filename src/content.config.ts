@@ -1,10 +1,9 @@
-import { defineCollection } from 'astro:content';
+import { defineCollection, type SchemaContext } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-const projects = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
-  schema: ({ image }) =>
+// Stesso schema per le due lingue: italiano in content/projects, inglese in content/projects-en.
+const schema = ({ image }: SchemaContext) =>
     z.object({
       title: z.string(),
       summary: z.string(),
@@ -48,7 +47,16 @@ const projects = defineCollection({
         result: z.string(),
         highlights: z.array(z.string()).default([]),
       }),
-    }),
+    });
+
+const projects = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+  schema,
 });
 
-export const collections = { projects };
+const projectsEn = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects-en' }),
+  schema,
+});
+
+export const collections = { projects, projectsEn };
