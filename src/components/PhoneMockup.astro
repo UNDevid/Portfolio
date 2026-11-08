@@ -1,94 +1,173 @@
 ---
-// Mockup di un telefono con una finta UI in stile Material 3 / Compose, animata in CSS.
-import { t, type Lang } from '../i18n';
+// Il telefono della hero: una home Android con le mie app.
+// In alto i widget veri di HailGuard e Beat Runner (ricostruiti dal codice Glance), in basso le icone
+// dei cinque progetti. A turno un'app si apre con l'animazione di avvio e mostra una sua schermata vera;
+// in modalità tecnica la finestra accanto mostra il codice dell'app aperta. Le icone portano al progetto.
+import { getImage } from 'astro:assets';
+import { t, lpath, type Lang } from '../i18n';
+import { snippets, highlight } from '../mockup-snippets';
+
+import iconBeatRunner from '../assets/mockup/icon-beatrunner.png';
+import iconHailGuard from '../assets/mockup/icon-hailguard.png';
+import iconSoundboard from '../assets/mockup/icon-soundboard.png';
+import iconCavagliato from '../assets/mockup/icon-cavagliato.png';
+import iconAthanor from '../assets/mockup/icon-athanor.png';
+import screenRunIt from '../assets/projects/beatrunner/run.jpg';
+import screenRunEn from '../assets/projects/beatrunner/en/run.jpg';
+import screenHail from '../assets/projects/hailguard/map.jpg';
+import screenSound from '../assets/mockup/screen-soundboard.jpg';
+import screenAthanor from '../assets/mockup/screen-athanor.jpg';
+import screenCavagliato from '../assets/projects/carmagnola/home.jpg';
 
 interface Props {
   lang: Lang;
 }
-const d = t(Astro.props.lang);
+const { lang } = Astro.props;
+const d = t(lang);
+const m = d.mockup;
+
+const icon = async (src: ImageMetadata) => (await getImage({ src, width: 96, format: 'webp' })).src;
+const screen = async (src: ImageMetadata) => (await getImage({ src, width: 560, format: 'webp', quality: 80 })).src;
+
+const apps = [
+  { id: 'beatrunner', name: 'Beat Runner', icon: await icon(iconBeatRunner), screen: await screen(lang === 'en' ? screenRunEn : screenRunIt) },
+  { id: 'hailguard', name: 'HailGuard', icon: await icon(iconHailGuard), screen: await screen(screenHail) },
+  { id: 'soundboard', name: 'Soundboard', icon: await icon(iconSoundboard), screen: await screen(screenSound) },
+  { id: 'athanor', name: 'Athanor', icon: await icon(iconAthanor), screen: await screen(screenAthanor) },
+  { id: 'carmagnola', name: 'Cavagliato', icon: await icon(iconCavagliato), screen: await screen(screenCavagliato), snippet: 'cavagliato' },
+].map((a) => ({ ...a, href: lpath(`/projects/${a.id}/`, lang), snippet: a.snippet ?? a.id }));
+
+const panes = ['home', ...apps.map((a) => a.snippet)].map((id) => ({
+  id,
+  file: snippets[id].file,
+  html: highlight(snippets[id], lang),
+}));
+const riskColors = ['#E57373', '#FFB74D', '#757575'];
 ---
 
-<div class="phone-scene relative mx-auto w-full max-w-[420px]" aria-hidden="true" data-inspect="PhoneMockup">
-  <!-- finestra di codice alle spalle -->
-  <div class="only-tech code-window glass absolute -left-4 top-10 hidden w-[330px] rounded-2xl p-4 font-mono text-[11px] leading-relaxed md:block lg:-left-6 xl:-left-20">
+<div class="phone-scene relative mx-auto w-full max-w-[420px]" data-phone data-inspect="PhoneMockup" role="group" aria-label={m.phoneAria}>
+  <!-- codice dell'app aperta, solo in modalità tecnica -->
+  <div class="only-tech code-window glass absolute -left-4 top-6 hidden w-[350px] rounded-2xl p-4 font-mono text-[10.5px] leading-relaxed md:block lg:-left-6 xl:-left-24" aria-hidden="true">
     <div class="mb-3 flex items-center gap-1.5">
       <span class="h-2.5 w-2.5 rounded-full bg-[#ff5f57]"></span>
       <span class="h-2.5 w-2.5 rounded-full bg-[#febc2e]"></span>
       <span class="h-2.5 w-2.5 rounded-full bg-[#28c840]"></span>
-      <span class="ml-2 text-[var(--color-dim)]">HomeScreen.kt</span>
+      <span class="ml-2 text-[var(--color-dim)]" data-code-file>{panes[0].file}</span>
     </div>
-<pre class="whitespace-pre text-[#b7c0cc]"><span class="k">@Composable</span>
-<span class="k">fun</span> <span class="f">HomeScreen</span>(vm: <span class="t">HomeViewModel</span>) &#123;
-  <span class="k">val</span> state <span class="k">by</span> vm.state
-    .<span class="f">collectAsStateWithLifecycle</span>()
-
-  <span class="t">LazyColumn</span> &#123;
-    <span class="f">items</span>(state.projects) &#123;
-      <span class="t">ProjectCard</span>(it)
-    &#125;
-  &#125;
-&#125;</pre>
+    <div class="code-panes relative">
+      {panes.map((p, i) => <pre class:list={['code-pane whitespace-pre text-[#b7c0cc]', i === 0 && 'is-on']} data-snippet={p.id} data-file={p.file} set:html={p.html} />)}
+    </div>
   </div>
 
   <!-- telefono -->
-  <div class="phone relative z-10 ml-auto aspect-[9/19] w-[260px] rounded-[44px] p-[10px] sm:w-[280px]" data-tilt="10">
-    <div class="screen relative h-full w-full overflow-hidden rounded-[36px] bg-[#0b0f14]">
-      <!-- glare -->
-      <div class="pointer-events-none absolute inset-0 z-20" style="background: radial-gradient(400px circle at var(--gx,30%) var(--gy,0%), #ffffff14, transparent 45%)"></div>
-      <!-- status bar -->
-      <div class="flex items-center justify-between px-6 pt-3 font-mono text-[10px] text-white/70">
+  <div class="phone relative z-10 ml-auto aspect-[9/19] w-[260px] rounded-[44px] p-[10px] sm:w-[280px]" data-tilt="8">
+    <div class="screen relative h-full w-full overflow-hidden rounded-[36px]" data-screen>
+      <div class="wallpaper absolute inset-0" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute inset-0 z-30" style="background: radial-gradient(400px circle at var(--gx,30%) var(--gy,0%), #ffffff12, transparent 45%)" aria-hidden="true"></div>
+
+      <!-- barra di stato -->
+      <div class="relative z-10 flex items-center justify-between px-6 pt-3 font-mono text-[10px] text-white/75" aria-hidden="true">
         <span>9:41</span>
-        <span class="h-4 w-4 rounded-full bg-black ring-1 ring-white/10"></span>
+        <span class="h-3.5 w-3.5 rounded-full bg-black ring-1 ring-white/10"></span>
         <span>5G ▮▮▮</span>
       </div>
-      <!-- app bar -->
-      <div class="px-5 pt-5">
-        <p class="text-[10px] text-white/50">{d.phone.welcome}</p>
-        <p class="font-[var(--font-display)] text-lg font-semibold text-white">{d.phone.title}</p>
-      </div>
-      <!-- chips -->
-      <div class="flex gap-1.5 px-5 pt-3">
-        <span class="rounded-full bg-[var(--color-volt)] px-2.5 py-1 text-[9px] font-semibold text-black">Android</span>
-        <span class="rounded-full border border-white/15 px-2.5 py-1 text-[9px] text-white/70">Flutter</span>
-        <span class="rounded-full border border-white/15 px-2.5 py-1 text-[9px] text-white/70">Web</span>
-      </div>
-      <!-- lista animata -->
-      <div class="feed space-y-2.5 px-4 pt-4">
-        {
-          [
-            ['#C1EF00', 'Compose UI', 72],
-            ['#4FC3F7', 'Flutter app', 54],
-            ['#C084FC', 'Web app', 88],
-            ['#FBBF24', 'Offline sync', 40],
-          ].map(([c, t, w], i) => (
-            <div class="item flex items-center gap-3 rounded-2xl bg-white/[0.04] p-3 ring-1 ring-white/5" style={`--i:${i}`}>
-              <span class="h-9 w-9 shrink-0 rounded-xl" style={`background: linear-gradient(135deg, ${c}, ${c}33)`} />
-              <div class="min-w-0 flex-1">
-                <p class="text-[11px] font-medium text-white">{t}</p>
-                <div class="mt-1.5 h-1.5 rounded-full bg-white/10">
-                  <div class="bar h-full rounded-full" style={`width:${w}%; background:${c}`} />
-                </div>
-              </div>
+
+      <div class="relative z-10 flex h-[calc(100%-26px)] flex-col px-3 pt-4 pb-3">
+        <!-- "In breve" di Android: la data di oggi (aggiornata nel browser) -->
+        <div class="glance mb-3 px-2" aria-hidden="true">
+          <p class="font-display text-[22px] leading-none font-medium text-white" data-glance-time>9:41</p>
+          <p class="mt-1.5 text-[10px] text-white/70 first-letter:uppercase" data-glance-date data-locale={lang === 'en' ? 'en-GB' : 'it-IT'}>
+            {new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'it-IT', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date())}
+          </p>
+        </div>
+
+        <!-- widget HailGuard -->
+        <div class="hg-widget rounded-[18px] p-2.5" aria-hidden="true">
+          <div class="flex items-center gap-1.5 px-1">
+            <svg class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M7 15a5 5 0 1 1 1.2-9.86A6 6 0 0 1 19.5 8 4 4 0 0 1 18 15.7V15z" opacity=".95"/><circle cx="8" cy="19" r="1.2"/><circle cx="12" cy="21" r="1.2"/><circle cx="16" cy="19" r="1.2"/></svg>
+            <span class="hg-title flex-1">HAILGUARD</span>
+            <svg class="h-3.5 w-3.5 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg>
+          </div>
+          <ul class="mt-2 space-y-1.5">
+            {
+              m.hail.rows.map((row, i) => (
+                <li class="hg-row flex items-center justify-between rounded-[10px] px-2.5 py-1.5">
+                  <span class="text-[10px] text-[#e8f4fd]">{row}</span>
+                  <span class:list={['flex items-center gap-1 text-[10px] font-medium', i === 0 && 'hg-alert']} style={`color:${riskColors[i]}`}>
+                    {i === 0 && <span class="h-1.5 w-1.5 rounded-full" style={`background:${riskColors[0]}`} />}
+                    {m.hail.risks[i]}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <!-- widget Beat Runner -->
+        <div class="br-widget mt-2.5 rounded-[18px] p-3" aria-hidden="true">
+          <div class="flex items-center">
+            <div class="flex-1">
+              <p class="text-[9px] text-[#9AA1A9]">{m.week.title}</p>
+              <p class="text-[19px] font-bold leading-tight text-[#F2F4F5]">{m.week.km}</p>
+              <p class="text-[9px] text-[#9AA1A9]">{m.week.runs}</p>
             </div>
-          ))
-        }
+            <span class="br-play grid h-9 w-9 place-items-center rounded-full">
+              <svg class="ml-0.5 h-4 w-4" viewBox="0 0 24 24" fill="#0B0D05"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+          </div>
+          <div class="mt-2 flex justify-between px-0.5">
+            {
+              m.week.days.map((day, i) => (
+                <span class="flex flex-col items-center gap-1">
+                  <span class:list={['br-dot h-1.5 w-1.5 rounded-full', [0, 2, 4].includes(i) && 'is-active']} style={`--i:${i}`} />
+                  <span class:list={['text-[8px]', [0, 2, 4].includes(i) ? 'text-[#F2F4F5]' : 'text-[#9AA1A9]']}>{day}</span>
+                </span>
+              ))
+            }
+          </div>
+          <div class="mt-2 flex items-center gap-1.5">
+            <svg class="h-3 w-3" viewBox="0 0 24 24" fill="#C1EF00"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3z"/></svg>
+            <span class="text-[9px] text-[#F2F4F5]">{m.week.playlist}</span>
+          </div>
+        </div>
+
+        <!-- icone dei progetti -->
+        <ul class="mt-auto grid grid-cols-5 gap-1 px-0.5 pb-2">
+          {
+            apps.map((a) => (
+              <li>
+                <a
+                  href={a.href}
+                  class="app-icon group/app flex flex-col items-center gap-1"
+                  data-app={a.id}
+                  data-screen={a.screen}
+                  data-snippet={a.snippet}
+                  aria-label={m.open(a.name)}
+                >
+                  <img src={a.icon} alt="" width="40" height="40" class="icon h-10 w-10 rounded-[12px] object-cover" loading="lazy" decoding="async" />
+                  <span class="w-full truncate text-center text-[8px] text-white/80">{a.name}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="mx-auto h-1 w-20 rounded-full bg-white/40" aria-hidden="true"></div>
       </div>
-      <!-- FAB -->
-      <div class="fab absolute bottom-14 right-5 grid h-12 w-12 place-items-center rounded-2xl bg-[var(--color-volt)] text-xl font-bold text-black shadow-[0_8px_30px_-6px_var(--color-volt)]">+</div>
-      <!-- bottom nav -->
-      <div class="absolute inset-x-0 bottom-0 flex justify-around border-t border-white/5 bg-white/[0.02] py-3">
-        <span class="h-1.5 w-8 rounded-full bg-[var(--color-volt)]"></span>
-        <span class="h-1.5 w-8 rounded-full bg-white/15"></span>
-        <span class="h-1.5 w-8 rounded-full bg-white/15"></span>
+
+      <!-- finestra dell'app che si apre -->
+      <div class="app-window pointer-events-none absolute inset-0 z-20" data-window aria-hidden="true">
+        <img class="h-full w-full object-cover object-top" alt="" data-window-img />
       </div>
+      <span class="tap pointer-events-none absolute z-40 h-9 w-9 rounded-full" data-tap aria-hidden="true"></span>
     </div>
   </div>
 
-  <!-- bagliore -->
-  <div class="glow absolute -right-10 top-1/4 -z-0 h-72 w-72 rounded-full blur-3xl"></div>
+  <div class="glow absolute -right-10 top-1/4 -z-0 h-72 w-72 rounded-full blur-3xl" aria-hidden="true"></div>
 </div>
 
 <style>
+  @import '@fontsource/anton/latin-400.css';
+
   .phone {
     background: linear-gradient(145deg, #2a313c, #0d1117 40%, #1b2129);
     box-shadow:
@@ -99,44 +178,222 @@ const d = t(Astro.props.lang);
     transform-style: preserve-3d;
     animation: float 7s ease-in-out infinite;
   }
+  .wallpaper {
+    background:
+      radial-gradient(120% 60% at 80% 0%, color-mix(in oklab, var(--color-volt) 16%, transparent), transparent 60%),
+      radial-gradient(90% 50% at 0% 100%, #1d3a5c66, transparent 70%),
+      linear-gradient(180deg, #0c1016, #080a0e);
+  }
   .code-window {
     animation: float 9s ease-in-out -2s infinite;
     box-shadow: 0 30px 80px -30px #000;
   }
+  .code-pane {
+    position: absolute;
+    inset: 0 auto auto 0;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+  }
+  .code-pane.is-on {
+    position: relative;
+    opacity: 1;
+    transform: none;
+  }
+  .code-pane :global(.k) { color: #c792ea; }
+  .code-pane :global(.f) { color: #82aaff; }
+  .code-pane :global(.t) { color: var(--color-volt); }
+  .code-pane :global(.s) { color: #c3e88d; }
+  .code-pane :global(.n) { color: #f78c6c; }
+  .code-pane :global(.c) { color: #5b6573; font-style: italic; }
+
+  /* Widget HailGuard: i colori del widget in tema scuro */
+  .hg-widget {
+    background: linear-gradient(160deg, #0d1b2a, #1a2f4d);
+    box-shadow: inset 0 0 0 1px #ffffff12;
+  }
+  .hg-title {
+    font-family: 'Anton', sans-serif;
+    font-style: italic;
+    transform: skewX(-8deg);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    color: #fff;
+    line-height: 1;
+  }
+  .hg-row { background: #22304d; }
+  .hg-alert span { animation: pulse 1.6s ease-in-out infinite; }
+
+  /* Widget Beat Runner: grafite, Volt e testo chiaro come in WeekWidget.kt */
+  .br-widget {
+    background: #1a1d21;
+    box-shadow: inset 0 0 0 1px #ffffff0f;
+  }
+  .br-play {
+    background: #c1ef00;
+    box-shadow: 0 0 18px -4px #c1ef00;
+  }
+  .br-dot { background: #2e3338; }
+  .br-dot.is-active {
+    background: #c1ef00;
+    animation: dot-in 0.5s var(--ease-out) backwards;
+    animation-delay: calc(var(--i) * 0.12s + 0.6s);
+  }
+
+  .app-icon .icon {
+    box-shadow: 0 6px 14px -6px #000;
+    transition: transform 0.3s var(--ease-out);
+  }
+  .app-icon:hover .icon,
+  .app-icon:focus-visible .icon { transform: scale(1.08); }
+
+  .app-window {
+    border-radius: 28px;
+    overflow: hidden;
+    opacity: 0;
+    background: #000;
+  }
+  .tap {
+    background: #ffffff;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+
   .glow {
     background: radial-gradient(circle, color-mix(in oklab, var(--color-volt) 45%, transparent), transparent 70%);
     opacity: 0.5;
   }
-  .k { color: #c792ea; }
-  .f { color: #82aaff; }
-  .t { color: var(--color-volt); }
 
-  .item {
-    animation: slideIn 6s var(--ease-out) infinite;
-    animation-delay: calc(var(--i) * 0.15s);
-  }
-  .bar {
-    transform-origin: left;
-    animation: grow 6s var(--ease-out) infinite;
-    animation-delay: calc(var(--i) * 0.15s + 0.2s);
-  }
-  .fab { animation: pop 6s var(--ease-out) infinite; }
+  @keyframes float { 50% { translate: 0 -14px; } }
+  @keyframes pulse { 50% { opacity: 0.35; } }
+  @keyframes dot-in { from { transform: scale(0); } }
 
-  @keyframes float {
-    50% { translate: 0 -14px; }
-  }
-  @keyframes slideIn {
-    0% { opacity: 0; transform: translateY(16px) scale(0.97); }
-    12%, 88% { opacity: 1; transform: none; }
-    100% { opacity: 0; transform: translateY(-8px); }
-  }
-  @keyframes grow {
-    0%, 8% { transform: scaleX(0); }
-    35%, 100% { transform: scaleX(1); }
-  }
-  @keyframes pop {
-    0%, 30% { transform: scale(0) rotate(-90deg); }
-    42%, 90% { transform: scale(1) rotate(0); }
-    100% { transform: scale(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .phone, .code-window, .hg-alert span, .br-dot.is-active { animation: none; }
   }
 </style>
+
+<script>
+  // Il "demo" del telefono: a turno apre un'app, la mostra, torna alla home.
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let stops: Array<() => void> = [];
+
+  function run(phone: HTMLElement) {
+    const screen = phone.querySelector<HTMLElement>('[data-screen]')!;
+    const win = phone.querySelector<HTMLElement>('[data-window]')!;
+    const img = phone.querySelector<HTMLImageElement>('[data-window-img]')!;
+    const tap = phone.querySelector<HTMLElement>('[data-tap]')!;
+    const file = phone.querySelector<HTMLElement>('[data-code-file]');
+    const panes = [...phone.querySelectorAll<HTMLElement>('[data-snippet]')].filter((p) => p.tagName === 'PRE');
+    const apps = [...phone.querySelectorAll<HTMLAnchorElement>('[data-app]')];
+
+    let alive = true;
+    let visible = false;
+    let wake: (() => void) | null = null;
+    const sleep = (ms: number) =>
+      new Promise<void>((resolve) => {
+        const id = setTimeout(resolve, ms);
+        stops.push(() => clearTimeout(id));
+      });
+    // Aspetta che il telefono sia sullo schermo e la scheda in primo piano.
+    const ready = () =>
+      visible && !document.hidden ? Promise.resolve() : new Promise<void>((r) => (wake = r));
+
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      if (visible && wake) {
+        wake();
+        wake = null;
+      }
+    });
+    io.observe(phone);
+    const onVis = () => !document.hidden && wake && (wake(), (wake = null));
+    document.addEventListener('visibilitychange', onVis);
+    stops.push(() => {
+      alive = false;
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVis);
+    });
+
+    const showCode = (id: string) => {
+      panes.forEach((p) => p.classList.toggle('is-on', p.dataset.snippet === id));
+      const on = panes.find((p) => p.dataset.snippet === id);
+      if (file && on) file.textContent = on.dataset.file ?? '';
+    };
+
+    // Precarica le schermate delle app.
+    apps.forEach((a) => {
+      const i = new Image();
+      i.src = a.dataset.screen!;
+    });
+
+    const origin = (a: HTMLElement) => {
+      const s = screen.getBoundingClientRect();
+      const r = (a.querySelector('.icon') as HTMLElement).getBoundingClientRect();
+      return {
+        x: ((r.left + r.width / 2 - s.left) / s.width) * 100,
+        y: ((r.top + r.height / 2 - s.top) / s.height) * 100,
+      };
+    };
+
+    (async () => {
+      let i = 0;
+      await sleep(2200);
+      while (alive) {
+        await ready();
+        if (!alive) return;
+        const app = apps[i % apps.length];
+        const o = origin(app);
+        // Il tocco sull'icona
+        tap.style.left = `${o.x}%`;
+        tap.style.top = `${o.y}%`;
+        await tap.animate(
+          [
+            { opacity: 0, transform: 'translate(-50%,-50%) scale(.4)' },
+            { opacity: 0.35, transform: 'translate(-50%,-50%) scale(1)' },
+            { opacity: 0, transform: 'translate(-50%,-50%) scale(1.5)' },
+          ],
+          { duration: 420, easing: 'ease-out' },
+        ).finished;
+        // L'app si apre partendo dall'icona, come l'animazione di avvio di Android
+        img.src = app.dataset.screen!;
+        try {
+          await img.decode();
+        } catch {
+          /* l'immagine comparirà comunque */
+        }
+        win.style.transformOrigin = `${o.x}% ${o.y}%`;
+        showCode(app.dataset.snippet!);
+        await win.animate(
+          [
+            { opacity: 0, transform: 'scale(.14)', borderRadius: '40%' },
+            { opacity: 1, transform: 'scale(1)', borderRadius: '28px' },
+          ],
+          { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' },
+        ).finished;
+        await sleep(2800);
+        await win.animate(
+          [
+            { opacity: 1, transform: 'scale(1)', borderRadius: '28px' },
+            { opacity: 0, transform: 'scale(.14)', borderRadius: '40%' },
+          ],
+          { duration: 420, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'forwards' },
+        ).finished;
+        showCode('home');
+        i++;
+        await sleep(1600);
+      }
+    })();
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    stops.forEach((s) => s());
+    stops = [];
+    // La data di oggi nella lingua della pagina
+    document.querySelectorAll<HTMLElement>('[data-glance-date]').forEach((el) => {
+      el.textContent = new Intl.DateTimeFormat(el.dataset.locale, { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
+    });
+    if (reduced()) return;
+    document.querySelectorAll<HTMLElement>('[data-phone]').forEach(run);
+  });
+</script>

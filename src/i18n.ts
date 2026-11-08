@@ -49,7 +49,12 @@ const it = {
     contactMe: 'Contattami',
     stats: { projects: 'Progetti', platforms: 'Piattaforme', solo: 'In autonomia' },
   },
-  phone: { welcome: 'Bentornato 👋', title: 'I miei progetti' },
+  mockup: {
+    open: (name: string) => `Apri il progetto ${name}`,
+    hail: { rows: ['Campo', 'Serra', 'Auto'], risks: ['Elevato', 'Moderato', 'Nessuno'] },
+    week: { title: 'Questa settimana', km: '12,4 km', runs: '3 corse', days: ['L', 'M', 'M', 'G', 'V', 'S', 'D'], playlist: 'Force your way' },
+    phoneAria: 'Telefono con le app e i siti dei miei progetti',
+  },
   marquee: {
     skillsLabel: 'Competenze',
     stackLabel: 'Tecnologie',
@@ -159,7 +164,12 @@ const en: Dict = {
     contactMe: 'Contact me',
     stats: { projects: 'Projects', platforms: 'Platforms', solo: 'Built solo' },
   },
-  phone: { welcome: 'Welcome back 👋', title: 'My projects' },
+  mockup: {
+    open: (name: string) => `Open the ${name} project`,
+    hail: { rows: ['Field', 'Greenhouse', 'Car'], risks: ['High', 'Moderate', 'None'] },
+    week: { title: 'This week', km: '12.4 km', runs: '3 runs', days: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], playlist: 'Force your way' },
+    phoneAria: 'A phone with the apps and websites of my projects',
+  },
   marquee: {
     skillsLabel: 'Skills',
     stackLabel: 'Technologies',
