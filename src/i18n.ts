@@ -54,6 +54,7 @@ const it = {
     hail: { rows: ['Campo', 'Serra', 'Auto'], risks: ['Elevato', 'Moderato', 'Nessuno'] },
     week: { title: 'Questa settimana', km: '12,4 km', runs: '3 corse', days: ['L', 'M', 'M', 'G', 'V', 'S', 'D'], playlist: 'Force your way' },
     phoneAria: 'Telefono con le app e i siti dei miei progetti',
+    themed: 'Colori da',
   },
   marquee: {
     skillsLabel: 'Competenze',
@@ -170,6 +171,7 @@ const en: Dict = {
     hail: { rows: ['Field', 'Greenhouse', 'Car'], risks: ['High', 'Moderate', 'None'] },
     week: { title: 'This week', km: '12.4 km', runs: '3 runs', days: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], playlist: 'Force your way' },
     phoneAria: 'A phone with the apps and websites of my projects',
+    themed: 'Colors from',
   },
   marquee: {
     skillsLabel: 'Skills',
