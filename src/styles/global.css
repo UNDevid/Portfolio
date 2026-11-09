@@ -31,6 +31,8 @@
 }
 
 html {
+  /* anche lo sfondo che si vede tirando la pagina oltre i bordi su mobile */
+  background: var(--color-bg);
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }

@@ -36,7 +36,13 @@ const itUrl = lang === 'it' || !alternateUrl ? canonical : alternateUrl;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <!-- Barra del browser (Chrome Android, Samsung Internet, Safari) dello stesso colore del sito, con tema chiaro o scuro del telefono -->
+    <meta name="theme-color" content="#07090d" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#07090d" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#07090d" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="manifest" href={url('/manifest.webmanifest')} />
+    <link rel="apple-touch-icon" href={url('/icons/apple-touch-icon.png')} />
     <link rel="canonical" href={canonical} />
     {
       alternateUrl && (
