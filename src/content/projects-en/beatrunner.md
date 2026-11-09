@@ -19,6 +19,9 @@ highlights:
   - From ~16k lines of XML and Fragments to 100% Compose
   - 11 Gradle modules with convention plugins
   - A run that survives the app being closed
+links:
+  - label: "The study on music and exercise (2020)"
+    href: https://pubmed.ncbi.nlm.nih.gov/31804098/
 gallery:
   - src: ../../assets/projects/beatrunner/en/run.jpg
     caption: Live run
@@ -50,7 +53,9 @@ People who run with music don't think about kilometers, they think about the pla
 
 ## Why music matters
 
-It isn't just a feeling. Research on music in sport is extensive, and a meta-analysis published in 2020 in *Psychological Bulletin* (Terry, Karageorghis and colleagues, more than 130 studies) summed up the findings. Listening to music during exercise lifts the mood, lowers perceived exertion and improves performance. The effects are stronger when the **beat of the track is synchronized with the movement**. Running in time with the music helps you hold your pace and use energy more efficiently.
+It isn't just a feeling. In 2020 a [meta-analysis published in *Psychological Bulletin*](https://pubmed.ncbi.nlm.nih.gov/31804098/) (Terry, Karageorghis and colleagues) brought together **139 studies and almost 3,600 participants**. The finding: listening to music during exercise improves mood, performance and oxygen efficiency, and makes the effort feel lighter. The effect on performance is stronger with **fast-tempo music**.
+
+So **tempo** matters, not just the song you like. That's where the idea came from: give every playlist a measured tempo and tie it to the runner's stride.
 
 Beat Runner works on both fronts, emotion and rhythm.
 

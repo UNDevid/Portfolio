@@ -6,6 +6,7 @@ import StackMarquee from '../StackMarquee.astro';
 import Projects from '../Projects.astro';
 import Approach from '../Approach.astro';
 import Contact from '../Contact.astro';
+import About from '../About.astro';
 import { lpath, type Lang } from '../../i18n';
 import { getProjects } from '../../projects';
 
@@ -21,5 +22,6 @@ const projects = await getProjects(lang);
   <StackMarquee lang={lang} />
   <Projects projects={projects} lang={lang} />
   <Approach lang={lang} />
+  <About lang={lang} />
   <Contact lang={lang} />
 </Base>

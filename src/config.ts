@@ -6,6 +6,12 @@ export const site = {
   role: 'Senior Android Developer',
   email: 'davide_valentino@outlook.it',
   available: true,
+  /**
+   * Statistiche delle visite con GoatCounter (gratuito, senza cookie, nessun banner necessario).
+   * Crea un account su https://www.goatcounter.com e scrivi qui il codice scelto (es. 'davidevalentino').
+   * Vuoto = nessuna statistica.
+   */
+  goatcounter: 'ildevid',
   socials: [
     { label: 'GitHub', href: 'https://github.com/UNDevid' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/davide-valentino-984543109/' },

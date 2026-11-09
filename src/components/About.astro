@@ -1,0 +1,148 @@
+---
+// "Chi sono": foto, presentazione breve, numeri, percorso professionale, formazione e CV.
+// La foto è facoltativa: basta mettere un file in src/assets/about/ (photo.jpg, .png o .webp).
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { site } from '../config';
+import { t, type Lang } from '../i18n';
+import { jobs, education, yearsOfExperience } from '../experience';
+import { url } from '../utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const d = t(lang);
+const a = d.about;
+const years = yearsOfExperience();
+
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/about/photo.{jpg,jpeg,png,webp}', { eager: true });
+const photo = Object.values(photos)[0]?.default;
+
+const month = new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'it-IT', { month: 'short', year: 'numeric' });
+const when = (ym: string) => month.format(new Date(`${ym}-01T12:00:00`));
+const pick = (v: string | { it: string; en: string }) => (typeof v === 'string' ? v : v[lang]);
+
+const cv = { it: url('/cv/Davide-Valentino-CV-IT.pdf'), en: url('/cv/Davide-Valentino-CV-EN.pdf') };
+const other: Lang = lang === 'it' ? 'en' : 'it';
+---
+
+<section id={d.anchors.about} class="relative scroll-mt-24 border-t border-[var(--color-line)]">
+  <div class="mx-auto max-w-6xl px-4 py-24 sm:px-8 sm:py-32">
+    <div class="grid gap-14 lg:grid-cols-[1fr_1.15fr]">
+      <!-- presentazione -->
+      <div class="lg:sticky lg:top-32 lg:self-start">
+        <p class="eyebrow mb-4" data-reveal><span class="text-[var(--accent)]">03</span> / {a.eyebrow}</p>
+        <div class="flex items-center gap-5" data-reveal style="--d:60ms">
+          {
+            photo ? (
+              <Image src={photo} alt={site.name} widths={[96, 192]} sizes="96px" class="avatar h-24 w-24 rounded-full object-cover" />
+            ) : (
+              <span class="avatar grid h-24 w-24 shrink-0 place-items-center rounded-full font-display text-3xl font-semibold" aria-hidden="true">
+                DV
+              </span>
+            )
+          }
+          <div>
+            <p class="display text-2xl font-semibold">{site.name}</p>
+            <p class="mt-1 font-mono text-xs text-[var(--color-muted)]">{site.role} · {d.contact.location}</p>
+          </div>
+        </div>
+
+        <h2 class="display mt-10 text-[clamp(2.2rem,5vw,3.4rem)] font-semibold" data-reveal style="--d:120ms">
+          {a.title1(years)}<br /><span class="text-[var(--color-dim)]">{a.title2}</span>
+        </h2>
+        {a.text.map((p, i) => <p class="mt-5 max-w-lg leading-relaxed text-[var(--color-muted)]" data-reveal style={`--d:${160 + i * 60}ms`}>{p}</p>)}
+
+        <dl class="mt-10 grid max-w-md grid-cols-3 gap-6 border-t border-[var(--color-line)] pt-7" data-reveal style="--d:260ms">
+          <div>
+            <dt class="eyebrow !text-[10px]">{a.stats.years}</dt>
+            <dd class="display mt-2 text-3xl font-semibold">{years}<span class="text-[var(--accent)]">+</span></dd>
+          </div>
+          <div>
+            <dt class="eyebrow !text-[10px]">{a.stats.companies}</dt>
+            <dd class="display mt-2 text-3xl font-semibold">{String(jobs.length).padStart(2, '0')}</dd>
+          </div>
+          <div>
+            <dt class="eyebrow !text-[10px]">{a.stats.apps}</dt>
+            <dd class="display mt-2 text-3xl font-semibold">02</dd>
+          </div>
+        </dl>
+
+        <div class="mt-10 flex flex-wrap items-center gap-3" data-reveal style="--d:320ms">
+          <a href={cv[lang]} class="btn btn-primary" download data-magnetic>
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M4 19h16" /></svg>
+            {a.cv} <span class="font-mono text-xs opacity-70">PDF</span>
+          </a>
+          <a href={cv[other]} class="link-underline font-mono text-xs text-[var(--color-muted)] hover:text-white" download hreflang={other}>
+            {a.cvOther} ↓
+          </a>
+        </div>
+      </div>
+
+      <!-- percorso -->
+      <div>
+        <h3 class="eyebrow mb-6" data-reveal>{a.journey}</h3>
+        <ol class="timeline relative space-y-3">
+          {
+            jobs.map((j, i) => (
+              <li class="job relative rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 pl-6" data-reveal data-inspect="Job" style={`--d:${i * 70}ms`}>
+                <p class="font-mono text-[11px] text-[var(--color-dim)]">
+                  {when(j.from)} — {j.to ? when(j.to) : <span class="text-[var(--accent)]">{a.now}</span>}
+                </p>
+                <p class="mt-2 font-display text-lg font-semibold text-white">{j.company}</p>
+                <p class="text-sm text-[var(--color-muted)]">{j.role[lang]}</p>
+                <p class="mt-2 text-[0.95rem] leading-relaxed text-[#c3cbd6]">{j.what[lang]}</p>
+                <ul class="mt-3 flex flex-wrap gap-1.5">
+                  {j.stack.map((s) => <li class="chip !text-[10.5px]">{s}</li>)}
+                </ul>
+              </li>
+            ))
+          }
+        </ol>
+
+        <h3 class="eyebrow mt-12 mb-5" data-reveal>{a.education}</h3>
+        <ul class="space-y-4" data-reveal>
+          {
+            education.map((e) => (
+              <li class="flex gap-4">
+                <span class="w-20 shrink-0 pt-0.5 font-mono text-[11px] text-[var(--color-dim)]">{e.to ? `${e.from}–${e.to}` : e.from}</span>
+                <span>
+                  <span class="block text-sm font-medium text-white">{pick(e.school)}</span>
+                  <span class="block text-sm text-[var(--color-muted)]">{e.title[lang]}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .avatar {
+    background:
+      radial-gradient(circle at 30% 25%, color-mix(in oklab, var(--accent) 55%, #fff 0%), transparent 60%),
+      linear-gradient(140deg, color-mix(in oklab, var(--accent) 70%, #0b0d05), #11161e);
+    color: #fff;
+    box-shadow:
+      0 0 0 3px var(--color-bg),
+      0 0 0 5px color-mix(in oklab, var(--accent) 60%, transparent),
+      0 20px 40px -18px #000;
+  }
+  .job::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 18px;
+    bottom: 18px;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: color-mix(in oklab, var(--accent) 60%, transparent);
+  }
+  .job:first-child::before {
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+</style>

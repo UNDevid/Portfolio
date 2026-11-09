@@ -20,7 +20,7 @@ Il sito ha due modalità: il racconto per tutti e i **dettagli tecnici** (archit
 
 ## Contatti
 
-[davide_valentino@outlook.it](mailto:davide_valentino@outlook.it) · [LinkedIn](https://www.linkedin.com/in/davide-valentino-984543109/)
+[davide_valentino@outlook.it](mailto:davide_valentino@outlook.it) · [LinkedIn](https://www.linkedin.com/in/davide-valentino-984543109/) · CV in PDF: [italiano](https://undevid.github.io/Portfolio/cv/Davide-Valentino-CV-IT.pdf) · [English](https://undevid.github.io/Portfolio/cv/Davide-Valentino-CV-EN.pdf)
 
 ---
 

@@ -1,0 +1,130 @@
+---
+// Modello delle immagini di anteprima (Open Graph, 1200×630) per LinkedIn, WhatsApp e simili.
+// Esiste solo in sviluppo: `npm run og` lo fotografa e salva le immagini in public/og/.
+import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
+import '../../../styles/global.css';
+import { site } from '../../../config';
+import { t, langs, type Lang } from '../../../i18n';
+import { getProjects, type Project } from '../../../projects';
+
+import iconBeatRunner from '../../../assets/mockup/icon-beatrunner.png';
+import iconHailGuard from '../../../assets/mockup/icon-hailguard.png';
+import iconSoundboard from '../../../assets/mockup/icon-soundboard.png';
+import iconAthanor from '../../../assets/mockup/icon-athanor.png';
+import iconCavagliato from '../../../assets/mockup/icon-cavagliato.png';
+
+export const getStaticPaths = (async () => {
+  if (!import.meta.env.DEV) return []; // mai pubblicato
+  const paths = [];
+  for (const lang of langs) {
+    paths.push({ params: { lang, card: 'home' }, props: { project: undefined } });
+    for (const project of await getProjects(lang)) paths.push({ params: { lang, card: project.id }, props: { project } });
+  }
+  return paths;
+}) satisfies GetStaticPaths;
+
+const lang = Astro.params.lang as Lang;
+const { project } = Astro.props as { project?: Project };
+const d = t(lang);
+const p = project?.data;
+const accent = p?.accent ?? '#C1EF00';
+const icons = [iconBeatRunner, iconHailGuard, iconSoundboard, iconAthanor, iconCavagliato];
+---
+
+<!doctype html>
+<html lang={lang} style={`--accent:${accent}`}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>OG · {p?.title ?? 'home'}</title>
+    <style>
+      html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <div class="card relative h-[630px] w-[1200px] overflow-hidden">
+      <div class="bg-grid absolute inset-0 opacity-70"></div>
+      <div class="glow absolute"></div>
+
+      <div class="relative flex h-full gap-14 p-[72px]">
+        <div class="flex min-w-0 flex-1 flex-col">
+          <p class="flex items-center gap-3 font-mono text-[16px] tracking-[0.12em] text-[var(--color-muted)] uppercase">
+            <span class="h-3 w-3 rounded-full bg-[var(--accent)]"></span>
+            {site.name} · {site.role}
+          </p>
+
+          {
+            p ? (
+              <>
+                <h1 class="display mt-10 text-[76px] font-semibold text-white">{p.title}</h1>
+                <p class="summary mt-7 text-[25px] leading-snug text-[#c3cbd6]">{p.plain.summary}</p>
+              </>
+            ) : (
+              <>
+                <h1 class="display mt-10 text-[84px] font-semibold text-white">
+                  {d.hero.line1}
+                  <br />
+                  <span class="text-gradient">{d.hero.line2}</span>
+                </h1>
+                <p class="summary mt-7 text-[24px] leading-snug text-[#c3cbd6]">{d.hero.intro.plain}</p>
+              </>
+            )
+          }
+
+          <div class="mt-auto flex flex-col gap-5">
+            <ul class="flex flex-nowrap gap-2">
+              {(p ? p.plain.tags : d.marquee.skills.slice(0, 3)).map((tag) => <li class="chip shrink-0 !text-[15px] !px-4 !py-1.5">{tag}</li>)}
+            </ul>
+            <p class="font-mono text-[18px] text-[var(--accent)]">undevid.github.io/Portfolio</p>
+          </div>
+        </div>
+
+        {
+          p?.cover ? (
+            <div class="cover-box relative w-[440px] shrink-0 self-center overflow-hidden rounded-[26px]">
+              <Image src={p.cover} alt="" widths={[880]} sizes="440px" class="h-[300px] w-full object-cover" style={`object-position:${p.coverPosition} center`} />
+            </div>
+          ) : (
+            !p && (
+              <div class="grid w-[300px] shrink-0 grid-cols-2 content-center gap-6 self-center">
+                {icons.map((src, i) => (
+                  <Image src={src} alt="" widths={[256]} class:list={['icon h-[128px] w-[128px] rounded-[34px]', i === 4 && 'col-span-2 justify-self-center']} />
+                ))}
+              </div>
+            )
+          )
+        }
+      </div>
+    </div>
+  </body>
+</html>
+
+<style>
+  .card {
+    background: #07090d;
+  }
+  .glow {
+    right: -160px;
+    top: -200px;
+    width: 720px;
+    height: 720px;
+    border-radius: 999px;
+    background: radial-gradient(circle, color-mix(in oklab, var(--accent) 34%, transparent), transparent 65%);
+  }
+  .summary {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cover-box {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--accent) 45%, transparent),
+      0 40px 90px -30px #000,
+      0 0 80px -30px var(--accent);
+  }
+  .icon {
+    box-shadow: 0 20px 40px -18px #000;
+  }
+</style>

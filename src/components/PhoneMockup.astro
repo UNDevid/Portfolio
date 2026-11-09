@@ -5,6 +5,7 @@
 // prende la palette di quell'app, come il colore dinamico di Android 12+. In modalità tecnica la
 // finestra accanto mostra il codice di quell'app. Le icone portano alla pagina del progetto.
 import { getImage } from 'astro:assets';
+import '@fontsource/anton/latin-400.css';
 import { t, lpath, type Lang } from '../i18n';
 import { snippets, highlight } from '../mockup-snippets';
 
@@ -71,9 +72,17 @@ const riskColors = ['#E57373', '#FFB74D', '#8a8f98'];
 
       <!-- barra di stato -->
       <div class="relative z-10 flex items-center justify-between px-6 pt-3 font-mono text-[10px] text-white/75" aria-hidden="true">
-        <span>9:41</span>
+        <span class="w-16">9:41</span>
         <span class="h-3.5 w-3.5 rounded-full bg-black ring-1 ring-white/10"></span>
-        <span>5G ▮▮▮</span>
+        <!-- icone di sistema in stile Android: Wi-Fi, rete mobile, batteria -->
+        <span class="flex w-16 items-center justify-end gap-1 text-white/85">
+          <svg class="h-[11px] w-[11px]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21 0 7.6A17.6 17.6 0 0 1 12 3a17.6 17.6 0 0 1 12 4.6z" /></svg>
+          <svg class="h-[11px] w-[11px]" viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h20V2z" /></svg>
+          <span class="relative ml-0.5 flex h-[9px] w-[17px] items-center rounded-[2.5px] border border-current p-[1px]">
+            <span class="h-full w-[78%] rounded-[1px] bg-current"></span>
+            <span class="absolute -right-[3px] top-1/2 h-[4px] w-[1.5px] -translate-y-1/2 rounded-r-sm bg-current"></span>
+          </span>
+        </span>
       </div>
 
       <div class="relative z-10 flex h-[calc(100%-26px)] flex-col px-3 pt-4 pb-3">
@@ -188,7 +197,6 @@ const riskColors = ['#E57373', '#FFB74D', '#8a8f98'];
 </style>
 
 <style>
-  @import '@fontsource/anton/latin-400.css';
 
   .phone-scene {
     transition:

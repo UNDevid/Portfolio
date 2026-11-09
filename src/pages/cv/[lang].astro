@@ -1,0 +1,287 @@
+---
+// CV stampabile (A4), generato dagli stessi dati del sito. Esiste solo in sviluppo:
+// `npm run cv` lo stampa in PDF in public/cv/. Contatti pubblici soltanto (email, LinkedIn, GitHub).
+import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/space-grotesk';
+import { site, stack } from '../../config';
+import { langs, type Lang } from '../../i18n';
+import { jobs, education, yearsOfExperience } from '../../experience';
+import { getProjects } from '../../projects';
+
+export const getStaticPaths = (() => (import.meta.env.DEV ? langs.map((lang) => ({ params: { lang } })) : [])) satisfies GetStaticPaths;
+
+const lang = Astro.params.lang as Lang;
+const projects = await getProjects(lang);
+const years = yearsOfExperience();
+const photos = import.meta.glob<{ default: ImageMetadata }>('../../assets/about/photo.{jpg,jpeg,png,webp}', { eager: true });
+const photo = Object.values(photos)[0]?.default;
+
+const L = {
+  it: {
+    profile: 'Profilo',
+    profileText: [
+      'Senior Android Developer con base a Torino. Ho iniziato nel 2016 con Java e oggi lavoro in Kotlin e Jetpack Compose, come consulente e freelance per realtà come Reply e Accenture: pagamenti digitali, moto connesse via Bluetooth, editoria, turismo, banche e sport in diretta.',
+      "Seguo i progetti dall'idea alla pubblicazione sugli store, con attenzione all'architettura e al design. In parallelo sviluppo app mie, due delle quali pubblicate su Google Play.",
+    ],
+    experience: 'Esperienza',
+    projects: 'Progetti selezionati',
+    skills: 'Competenze',
+    languages: 'Lingue',
+    langList: ['Italiano · madrelingua', 'Inglese · buono, scritto e parlato'],
+    education: 'Formazione',
+    now: 'oggi',
+    location: 'Torino, Italia',
+    more: 'Tutti i dettagli e i case study sul portfolio',
+  },
+  en: {
+    profile: 'Profile',
+    profileText: [
+      'Senior Android Developer based in Turin, Italy. I started in 2016 with Java and today I work with Kotlin and Jetpack Compose, as a consultant and freelancer for companies such as Reply and Accenture: digital payments, Bluetooth-connected motorbikes, publishing, tourism, banking and live sport.',
+      'I take projects from the first idea to release on the stores, with care for both architecture and design. Alongside client work I build my own apps, two of them published on Google Play.',
+    ],
+    experience: 'Experience',
+    projects: 'Selected projects',
+    skills: 'Skills',
+    languages: 'Languages',
+    langList: ['Italian · native', 'English · good, written and spoken'],
+    education: 'Education',
+    now: 'present',
+    location: 'Turin, Italy',
+    more: 'Full details and case studies on the portfolio',
+  },
+}[lang];
+
+const month = new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'it-IT', { month: 'short', year: 'numeric' });
+const when = (ym: string) => month.format(new Date(`${ym}-01T12:00:00`));
+const pick = (v: string | { it: string; en: string }) => (typeof v === 'string' ? v : v[lang]);
+const portfolio = lang === 'en' ? 'undevid.github.io/Portfolio/en' : 'undevid.github.io/Portfolio';
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>{site.name} — CV</title>
+  </head>
+  <body>
+    <main class="page">
+      <header class="head">
+        {photo && <Image src={photo} alt="" widths={[220]} class="photo" />}
+        <div>
+          <h1>{site.name}</h1>
+          <p class="role">{site.role} · {years}+ {lang === 'en' ? 'years' : 'anni'}</p>
+          <p class="contacts">
+            <span>{site.email}</span>
+            <span>linkedin.com/in/davide-valentino-984543109</span>
+            <span>github.com/UNDevid</span>
+            <span class="accent">{portfolio}</span>
+            <span>{L.location}</span>
+          </p>
+        </div>
+      </header>
+
+      <div class="cols">
+        <div class="main">
+          <section>
+            <h2>{L.profile}</h2>
+            {L.profileText.map((p) => <p>{p}</p>)}
+          </section>
+
+          <section>
+            <h2>{L.experience}</h2>
+            {
+              jobs.map((j) => (
+                <article class="item">
+                  <p class="row">
+                    <span class="title">
+                      {j.company} <span class="muted">· {j.role[lang]}</span>
+                    </span>
+                    <span class="when">{when(j.from)} — {j.to ? when(j.to) : L.now}</span>
+                  </p>
+                  <p>
+                    {j.what[lang]} <span class="tags">{j.stack.join(' · ')}</span>
+                  </p>
+                </article>
+              ))
+            }
+          </section>
+
+          <section>
+            <h2>{L.projects}</h2>
+            {
+              projects.map((p) => (
+                <article class="item">
+                  <p class="title">
+                    {p.data.title} <span class="muted">· {p.data.plain.tags.join(' · ')}</span>
+                  </p>
+                  <p>{p.data.plain.summary.split(/(?<=\.)\s/)[0]}</p>
+                </article>
+              ))
+            }
+            <p class="more">{L.more}: <span class="accent">{portfolio}</span></p>
+          </section>
+        </div>
+
+        <aside class="side">
+          <section>
+            <h2>{L.skills}</h2>
+            <ul class="list">{stack.map((s) => <li>{s}</li>)}</ul>
+          </section>
+          <section>
+            <h2>{L.languages}</h2>
+            <ul class="list">{L.langList.map((s) => <li>{s}</li>)}</ul>
+          </section>
+          <section>
+            <h2>{L.education}</h2>
+            {
+              education.map((e) => (
+                <article class="item">
+                  <p class="when">{e.to ? `${e.from} – ${e.to}` : e.from}</p>
+                  <p class="title">{pick(e.school)}</p>
+                  <p>{e.title[lang]}</p>
+                </article>
+              ))
+            }
+          </section>
+        </aside>
+      </div>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    margin: 0;
+    background: #fff;
+    color: #1d232b;
+    font-family: 'Inter Variable', sans-serif;
+    font-size: 9pt;
+    line-height: 1.45;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm;
+    padding: 12mm 14mm 10mm;
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 7mm;
+    padding-bottom: 6mm;
+    border-bottom: 2.5px solid #1d232b;
+  }
+  .photo {
+    width: 26mm;
+    height: 26mm;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  h1 {
+    margin: 0;
+    font-family: 'Space Grotesk Variable', sans-serif;
+    font-size: 26pt;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .role {
+    margin: 2mm 0 0;
+    font-size: 12pt;
+    font-weight: 600;
+    color: #4a5562;
+  }
+  .contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1mm 4mm;
+    margin: 3mm 0 0;
+    font-size: 8.6pt;
+    color: #4a5562;
+  }
+  .accent {
+    color: #5b7a00;
+    font-weight: 600;
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 52mm;
+    gap: 9mm;
+    margin-top: 6mm;
+  }
+  .side {
+    border-left: 1px solid #e3e7ec;
+    padding-left: 6mm;
+  }
+  section + section {
+    margin-top: 5.5mm;
+  }
+  h2 {
+    margin: 0 0 2.5mm;
+    font-family: 'Space Grotesk Variable', sans-serif;
+    font-size: 9pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #5b7a00;
+  }
+  p {
+    margin: 0 0 1.6mm;
+  }
+  .item {
+    break-inside: avoid;
+    margin-bottom: 3.2mm;
+  }
+  .item p {
+    margin: 0;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 4mm;
+    align-items: baseline;
+  }
+  .row .when {
+    white-space: nowrap;
+  }
+  .when {
+    font-size: 8pt;
+    color: #7a8592;
+  }
+  .title {
+    font-weight: 650;
+    color: #11161e;
+  }
+  .muted {
+    font-weight: 400;
+    color: #5a6573;
+  }
+  .tags {
+    margin-left: 1.5mm;
+    font-size: 8pt;
+    color: #7a8592;
+  }
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .list li {
+    padding: 0.5mm 0;
+    border-bottom: 1px dotted #e3e7ec;
+  }
+  .more {
+    font-size: 8.6pt;
+    color: #5a6573;
+  }
+</style>

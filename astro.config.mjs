@@ -10,5 +10,6 @@ export default defineConfig({
   site: process.env.SITE ?? 'https://undevid.github.io',
   base: process.env.BASE ?? '/',
   trailingSlash: 'ignore',
+  devToolbar: { enabled: false },
   vite: { plugins: [tailwindcss()] },
 });

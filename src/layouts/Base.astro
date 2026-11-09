@@ -14,9 +14,12 @@ interface Props {
   title?: string;
   description?: string;
   accent?: string;
+  /** Immagine di anteprima (public/og/...), percorso senza base. */
+  ogImage?: string;
 }
 
 const { lang, alternate, accent } = Astro.props;
+const ogImage = new URL(url(Astro.props.ogImage ?? `/og/${lang}/home.jpg`), Astro.site);
 const d = t(lang);
 const title = Astro.props.title ?? `${site.name} — ${site.role}`;
 const description = Astro.props.description ?? d.hero.intro.plain;
@@ -50,7 +53,13 @@ const itUrl = lang === 'it' || !alternateUrl ? canonical : alternateUrl;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:site_name" content={site.name} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
     <script is:inline>
       (function () {
         var d = document.documentElement;
@@ -91,6 +100,20 @@ const itUrl = lang === 'it' || !alternateUrl ? canonical : alternateUrl;
       })();
     </script>
     <ClientRouter />
+    {
+      site.goatcounter && import.meta.env.PROD && (
+        <>
+          <script is:inline async data-goatcounter={`https://${site.goatcounter}.goatcounter.com/count`}data-goatcounter-settings='{"no_onload": true}' src="https://gc.zgo.at/count.js" />
+          <script is:inline>
+            // Con View Transitions le pagine cambiano senza ricaricare: si conta ogni pagina vista.
+            document.addEventListener('astro:page-load', function () {
+              var send = function () { window.goatcounter && window.goatcounter.count && window.goatcounter.count({ path: location.pathname }); };
+              if (window.goatcounter && window.goatcounter.count) send(); else setTimeout(send, 1500);
+            });
+          </script>
+        </>
+      )
+    }
   </head>
   <body class="noise min-h-dvh">
     <a

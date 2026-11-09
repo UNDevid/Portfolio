@@ -19,6 +19,9 @@ highlights:
   - Da ~16k righe XML e Fragment a 100% Compose
   - 11 moduli Gradle con convention plugin
   - Corsa che sopravvive alla chiusura dell'app
+links:
+  - label: "Lo studio su musica e sport (2020)"
+    href: https://pubmed.ncbi.nlm.nih.gov/31804098/
 gallery:
   - src: ../../assets/projects/beatrunner/run.jpg
     caption: Corsa in diretta
@@ -50,7 +53,9 @@ Chi corre con la musica non pensa ai chilometri, pensa alla playlist. Beat Runne
 
 ## Perché la musica conta
 
-Non è solo una sensazione. La ricerca sulla musica nello sport è ampia, e una meta-analisi pubblicata nel 2020 su *Psychological Bulletin* (Terry, Karageorghis e colleghi, oltre 130 studi) ha riassunto i risultati. Ascoltare musica durante l'attività fisica migliora l'umore, riduce la fatica percepita e migliora la prestazione. Gli effetti sono più marcati quando il **battito del brano è sincronizzato con il movimento**. Correre a tempo di musica aiuta a mantenere il passo e a usare l'energia in modo più efficiente.
+Non è solo una sensazione. Nel 2020 una [meta-analisi pubblicata su *Psychological Bulletin*](https://pubmed.ncbi.nlm.nih.gov/31804098/) (Terry, Karageorghis e colleghi) ha messo insieme **139 studi e quasi 3.600 partecipanti**. Il risultato: ascoltare musica durante l'attività fisica migliora l'umore, la prestazione e l'efficienza nell'uso dell'ossigeno, e fa percepire meno la fatica. L'effetto sulla prestazione è più forte con la **musica dal ritmo veloce**.
+
+Il **ritmo** conta, quindi, e non solo la canzone che piace. Da qui l'idea di dare a ogni playlist un tempo misurato e di legarlo al passo di chi corre.
 
 Beat Runner lavora su entrambi i fronti, l'emozione e il ritmo.
 
