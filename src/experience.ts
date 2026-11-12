@@ -15,6 +15,7 @@ export type Job = {
 export const jobs: Job[] = [
   {
     from: '2026-09',
+    to: '2026-10',
     company: 'Synesthesia',
     role: { it: 'Android Developer · freelance', en: 'Android Developer · freelance' },
     what: { it: 'App white-label per lo sport in diretta, guidate dalla configurazione.', en: 'White-label live sport apps, driven by configuration.' },
