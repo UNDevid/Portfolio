@@ -47,6 +47,9 @@ export async function withPage(fn) {
     const once = (ev) => new Promise((fn) => listeners.push({ ev, fn }));
 
     await send('Page.enable');
+    // Sempre le immagini appena modificate (foto, copertine), mai quelle in cache
+    await send('Network.enable');
+    await send('Network.setCacheDisabled', { cacheDisabled: true });
     const open = async (path) => {
       const loaded = once('Page.loadEventFired');
       await send('Page.navigate', { url: `${BASE}${path}` });
