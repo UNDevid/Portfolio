@@ -25,7 +25,7 @@ const heading = Astro.props.heading ?? t(lang).project.gallery[variant === 'art'
 
   {
     variant === 'promo' ? (
-      <ul class="gallery flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-6 sm:gap-8 sm:px-8 lg:justify-center">
+      <ul class="gallery flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-6 sm:gap-8 sm:px-8">
         {shots.map((s, i) => (
           <li class="shrink-0 snap-center" data-reveal style={`--d:${i * 90}ms`}>
             <figure>
@@ -44,7 +44,7 @@ const heading = Astro.props.heading ?? t(lang).project.gallery[variant === 'art'
         ))}
       </ul>
     ) : variant === 'phone' ? (
-      <ul class="gallery flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-6 sm:gap-10 sm:px-8 lg:justify-center">
+      <ul class="gallery flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-6 sm:gap-10 sm:px-8">
         {shots.map((s, i) => (
           <li class="shrink-0 snap-center" data-reveal style={`--d:${i * 90}ms`}>
             <figure>
@@ -120,5 +120,13 @@ const heading = Astro.props.heading ?? t(lang).project.gallery[variant === 'art'
   .gallery {
     scrollbar-width: thin;
     scrollbar-color: var(--sb-thumb) transparent;
+  }
+  /* Centrata quando le schermate ci stanno, scorrevole dal primo all'ultimo quando non ci stanno.
+     (justify-content: center taglierebbe le prime schermate, irraggiungibili con lo scroll.) */
+  .gallery > li:first-child {
+    margin-inline-start: auto;
+  }
+  .gallery > li:last-child {
+    margin-inline-end: auto;
   }
 </style>
